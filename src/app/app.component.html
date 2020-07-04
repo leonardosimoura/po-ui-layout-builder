@@ -1,0 +1,33 @@
+<div class="po-wrapper">
+  <po-menu [p-menus]="[{ label: 'PO UI - Angular Framework', link: '/' }]"
+    p-logo="https://po-ui.io/assets/graphics/po.png" p-short-logo="https://po-ui.io/assets/graphics/po.png">
+  </po-menu>
+
+  <po-page-default p-title="Teste" [p-actions]="actions">
+    <app-component-layout *ngFor="let item of components;" [componentData]="item"></app-component-layout>
+  </po-page-default>
+
+  <po-modal p-title="Component" [p-primary-action]="confirm" [p-secondary-action]="close">
+    <form #componentsForm>
+
+      <div class="po-row">
+        <po-combo class="po-md-12" name="componentParaAdd" p-label="Componente:" [p-field-value]
+          [(ngModel)]="componentParaAdd" p-required [p-options]="componentsOptions">
+        </po-combo>
+      </div>
+
+      <div class="po-row">
+
+        <po-list-view p-property-title="name" [p-items]="componentProperties">
+          <ng-template p-list-view-content-template let-item>
+            <div class="po-row">
+              <po-input name="input" [(ngModel)]="item.value"></po-input>
+            </div>
+          </ng-template>
+        </po-list-view>
+      </div>
+
+    </form>
+  </po-modal>
+
+</div>
