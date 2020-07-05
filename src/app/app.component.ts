@@ -1,8 +1,9 @@
 import { Component, Type, ViewChild, ComponentFactoryResolver, Injector } from '@angular/core';
 import { ComponentLayoutModel } from 'src/models/component.layout.model';
-import { PoPageDefaultComponent, PoTableComponent, PoComponentsModule, PoModalAction, PoNotificationService, PoModalComponent, PoComboOption, PoPageAction, PoButtonComponent, PoTreeViewItem, PoSelectOption } from '@po-ui/ng-components';
+import { PoPageDefaultComponent, PoTableComponent, PoComponentsModule, PoModalAction, PoNotificationService, PoModalComponent, PoComboOption, PoPageAction, PoButtonComponent, PoTreeViewItem, PoSelectOption, PoListViewAction } from '@po-ui/ng-components';
 import { NgForm } from '@angular/forms';
 import { v4 as uuidv4 } from 'uuid';
+import { PorowComponent } from './porow/porow.component';
 
 @Component({
   selector: 'app-root',
@@ -22,6 +23,7 @@ export class AppComponent {
 
   constructor(private poNotification: PoNotificationService, private resolver: ComponentFactoryResolver, private injector: Injector) {
     this.listaComponents = this.obterComponentes(PoComponentsModule);
+    this.listaComponents.push(PorowComponent);
     this.componentsOptions = this.listaComponents.map<PoComboOption>((item) => {
       return { label: item.name, value: item } as unknown as PoComboOption;
     });
@@ -87,7 +89,7 @@ export class AppComponent {
 
     const mapper = (item: ComponentLayoutModel) => {
       const poTreeViewModel: PoTreeViewItem = {
-        label: (item.component != null) ? item.component.name : "novo",
+        label: (item.component != null) ? item.component.name : "Novo Componente",
         value: item.id //item
       };
 
@@ -131,21 +133,18 @@ export class AppComponent {
 
   treeViewItemSelecionado(treeViewItem: PoTreeViewItem) {
 
-    const disMark = (dismarkItem: PoTreeViewItem) => {
+    const unmark = (dismarkItem: PoTreeViewItem) => {
       dismarkItem.selected = false;
 
       if (dismarkItem.subItems != undefined || dismarkItem.subItems != null) {
         for (let i = 0; i < dismarkItem.subItems.length; i++) {
           const element = dismarkItem.subItems[i];
-          disMark(element);
+          unmark(element);
         }
       }
     }
-    disMark(treeViewItem);
-    console.log(JSON.stringify(treeViewItem));
+    unmark(treeViewItem);
     const search = this.buscarComponentPorId(treeViewItem.value as string);
-    console.log('search');
-    console.log(JSON.stringify(search));
     this.treeViewData = [...this.treeViewData];
     this.componentEdicao = search;
   }
@@ -215,7 +214,7 @@ export class AppComponent {
     }
 
     const treeViewItem = this.obterItemTreeListPorId(this.componentEdicao.id);
-    treeViewItem.label = (this.componentEdicao.component != null) ? this.componentEdicao.component.name : 'novo';
+    treeViewItem.label = (this.componentEdicao.component != null) ? this.componentEdicao.component.name : 'Novo Componente';
 
     this.treeViewData = [...this.treeViewData];
     this.componentEdicao = null;

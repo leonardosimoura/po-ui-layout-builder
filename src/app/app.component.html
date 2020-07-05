@@ -25,19 +25,24 @@
         p-primary-label="Confirmar" (p-secondary-action)="adicionarSubComponentes()" p-secondary-label="Add Filhos">
 
         <div class="po-row" *ngIf="componentEdicao != null">
-          <po-combo class="po-md-12" name="ComponentCombo" p-label="Componente:" [p-field-value]
-            [(ngModel)]="componentEdicao.component" p-required [p-options]="componentsOptions"
-            (p-change)="changeComponentCombo()">
+          <po-combo class="po-md-12" name="ComponentCombo" p-label="Componente:" [(ngModel)]="componentEdicao.component"
+            p-required [p-options]="componentsOptions" (p-change)="changeComponentCombo()" [p-filter-mode]="'contains'">
           </po-combo>
         </div>
 
         <div class="po-row" *ngIf="componentEdicao != null">
-          <po-list-view class="po-md-12" p-property-title="name" [p-items]="componentProperties">
+          <po-list-view class="po-md-12" p-property-title="name" p-height="500" [p-items]="componentProperties">
             <ng-template p-list-view-content-template let-item>
               <div class="po-row">
-                <po-input name="input" [(ngModel)]="item.value"></po-input>
+                <po-switch [(ngModel)]="item.showEditor" p-label="Exibir editor avançado?" p-label-off=" "
+                  p-label-on=" ">
+                </po-switch>
               </div>
-              <div class="po-row">
+              <div class="po-row" *ngIf="item.showEditor == undefined || item.showEditor == false">
+                <po-input name="input" class="po-md-12" [(ngModel)]="item.value"></po-input>
+
+              </div>
+              <div class="po-row" *ngIf="item.showEditor == true">
                 <po-code-editor class="po-md-12" [(ngModel)]="item.value" p-height="300" p-language="json">
                 </po-code-editor>
               </div>

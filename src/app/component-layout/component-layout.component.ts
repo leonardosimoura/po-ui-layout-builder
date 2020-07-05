@@ -28,10 +28,8 @@ export class ComponentLayoutComponent implements OnInit {
     );
   }
 
-
   gerarSubComponents(componente: ComponentLayoutModel) {
-    const subComponents = [];
-
+    const subComponentesGerados = [];
     for (let i = 0; i < componente.subComponent.length; i++) {
       const element = componente.subComponent[i];
       const subComponentFactory = this.resolver.resolveComponentFactory(
@@ -44,11 +42,9 @@ export class ComponentLayoutComponent implements OnInit {
         subcomp.instance[dataKey] = element.data[dataKey];
       }
       subcomp.hostView.detectChanges();
-      subComponents.push(
-        [subcomp.location.nativeElement]
-      );
+      subComponentesGerados.push(subcomp.location.nativeElement);
     }
-    return subComponents;
+    return [[...subComponentesGerados]];
   }
 
   ngOnInit(): void {
