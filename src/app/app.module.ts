@@ -7,6 +7,7 @@ import { PoModule } from '@po-ui/ng-components';
 import { ComponentLayoutComponent } from './component-layout/component-layout.component';
 import { FormsModule } from '@angular/forms';
 import { PorowComponent } from './porow/porow.component';
+import { PoCodeEditorModule } from '@po-ui/ng-code-editor';
 
 @NgModule({
   declarations: [
@@ -19,7 +20,8 @@ import { PorowComponent } from './porow/porow.component';
     BrowserAnimationsModule,
     AppRoutingModule,
     FormsModule,
-    PoModule
+    PoModule,
+    PoCodeEditorModule
   ],
   providers: [],
   bootstrap: [AppComponent]

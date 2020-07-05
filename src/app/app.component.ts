@@ -1,6 +1,6 @@
 import { Component, Type, ViewChild, ComponentFactoryResolver, Injector } from '@angular/core';
 import { ComponentLayoutModel } from 'src/models/component.layout.model';
-import { PoPageDefaultComponent, PoTableComponent, PoComponentsModule, PoModalAction, PoNotificationService, PoModalComponent, PoComboOption, PoPageAction, PoButtonComponent, PoTreeViewItem } from '@po-ui/ng-components';
+import { PoPageDefaultComponent, PoTableComponent, PoComponentsModule, PoModalAction, PoNotificationService, PoModalComponent, PoComboOption, PoPageAction, PoButtonComponent, PoTreeViewItem, PoSelectOption } from '@po-ui/ng-components';
 import { NgForm } from '@angular/forms';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -205,7 +205,13 @@ export class AppComponent {
 
     for (let i = 0; i < this.componentProperties.length; i++) {
       const element = this.componentProperties[i];
-      this.componentEdicao.data[element.name] = element.value;
+      if (element.value) {
+        try {
+          this.componentEdicao.data[element.name] = JSON.parse(element.value);
+        } catch (error) {
+          this.componentEdicao.data[element.name] = element.value;
+        }
+      }
     }
 
     const treeViewItem = this.obterItemTreeListPorId(this.componentEdicao.id);
@@ -262,4 +268,9 @@ export class AppComponent {
     }
   }
   componentProperties: any[] = [];
+
+
+  //CodeEditor
+
+
 }

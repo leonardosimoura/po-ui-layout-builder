@@ -32,10 +32,14 @@
         </div>
 
         <div class="po-row" *ngIf="componentEdicao != null">
-          <po-list-view p-property-title="name" [p-items]="componentProperties">
+          <po-list-view class="po-md-12" p-property-title="name" [p-items]="componentProperties">
             <ng-template p-list-view-content-template let-item>
               <div class="po-row">
                 <po-input name="input" [(ngModel)]="item.value"></po-input>
+              </div>
+              <div class="po-row">
+                <po-code-editor class="po-md-12" [(ngModel)]="item.value" p-height="300" p-language="json">
+                </po-code-editor>
               </div>
             </ng-template>
           </po-list-view>
