@@ -1,1 +1,8 @@
 /* You can add global styles to this file, and also import other style files */
+
+.po-tree-view-item-header-checkbox .po-checkbox .po-checkbox-label::before{
+    display:  none !important;
+    height: 0px !important;
+    width: 0px !important;
+    border: none !important;
+}

@@ -1,7 +1,8 @@
 import { Component, Type, ViewChild, ComponentFactoryResolver, Injector } from '@angular/core';
 import { ComponentLayoutModel } from 'src/models/component.layout.model';
-import { PoPageDefaultComponent, PoTableComponent, PoComponentsModule, PoModalAction, PoNotificationService, PoModalComponent, PoComboOption, PoPageAction, PoButtonComponent } from '@po-ui/ng-components';
+import { PoPageDefaultComponent, PoTableComponent, PoComponentsModule, PoModalAction, PoNotificationService, PoModalComponent, PoComboOption, PoPageAction, PoButtonComponent, PoTreeViewItem } from '@po-ui/ng-components';
 import { NgForm } from '@angular/forms';
+import { v4 as uuidv4 } from 'uuid';
 
 @Component({
   selector: 'app-root',
@@ -11,21 +12,12 @@ import { NgForm } from '@angular/forms';
 export class AppComponent {
 
   components: ComponentLayoutModel[] = [
-    // {
-    //   component: PoTableComponent,
-    //   data: {
-    //     items: [
-    //       {
-    //         nome: "nome",
-    //         sobrenome: "sobrenome"
-    //       }
-    //     ]
-    //   },
-    //   subComponent: []
-    // }
+
   ]
 
   listaComponents: Type<any>[] = [];
+
+
 
 
   constructor(private poNotification: PoNotificationService, private resolver: ComponentFactoryResolver, private injector: Injector) {
@@ -54,73 +46,199 @@ export class AppComponent {
     return components;
   }
 
-  close: PoModalAction = {
-    action: () => {
-      this.closeModal();
-    },
-    label: 'Fechar',
-    danger: true
-  };
-
-  confirm: PoModalAction = {
-    action: () => {
-      this.adicionarNovoComponent();
-    },
-    label: 'Confirmar'
-  };
-
-  adicionarNovoComponent() {
-
-    let data = {};
-
-    for (let i = 0; i < this.componentProperties.length; i++) {
-      const element = this.componentProperties[i];
-      data[element.name] = element.value;
-    }
-
-    this.components.push({
-      component: this.componentParaAdd,
-      data: data,
-      subComponent: [{
-        component: PoButtonComponent,
-        data: { label: '2' },
-        subComponent: []
-      }]
-    })
-    this.closeModal();
-  }
-
-  closeModal() {
-    this.poModal.close();
-  }
-
-  openModalComponente() {
-    this.poModal.open();
-  }
-
   actions: PoPageAction[] = [
     {
-      label: "Novo Componente",
-      action: this.openModalComponente.bind(this)
+      label: "Config",
+      action: this.openConfig.bind(this)
     }
   ]
 
 
-  @ViewChild(PoModalComponent, { static: true }) poModal: PoModalComponent;
+  //Edição
+
+
+  private componentesEdicao: ComponentLayoutModel[] = [];
+
+  treeViewData: PoTreeViewItem[] = [];
+
+  confirmarAlteracoes() {
+    this.confirmarAlteracoesComponentes();
+    this.closeModal();
+  }
+
+
+  adicionarComponente() {
+    this.componentesEdicao.push({
+      id: uuidv4(),
+      component: null,
+      data: {},
+      subComponent: []
+    });
+    this.atualizarTreeView();
+  }
+  confirmarAlteracoesComponentes() {
+    this.components = [];
+    setTimeout(() => {
+      this.components = [...this.componentesEdicao];
+    }, 500);
+  }
+
+  atualizarTreeView() {
+
+    const mapper = (item: ComponentLayoutModel) => {
+      const poTreeViewModel: PoTreeViewItem = {
+        label: (item.component != null) ? item.component.name : "novo",
+        value: item.id //item
+      };
+
+      const subItems: PoTreeViewItem[] = [];
+
+      for (let i = 0; i < item.subComponent.length; i++) {
+        const element = item.subComponent[i];
+        subItems.push(mapper(element));
+      }
+      poTreeViewModel.subItems = subItems;
+
+      return poTreeViewModel;
+    };
+
+    this.treeViewData = [];
+    for (let i = 0; i < this.componentesEdicao.length; i++) {
+      const element = this.componentesEdicao[i];
+      this.treeViewData.push(mapper(element))
+    }
+  }
+
+  buscarComponentPorId(id: string) {
+    const finder = (id: string, parents: ComponentLayoutModel[]): ComponentLayoutModel => {
+
+      const firstTry = parents.find(p => p.id == id);
+
+      if (firstTry)
+        return firstTry as ComponentLayoutModel;
+
+      for (let i = 0; i < parents.length; i++) {
+        const element = parents[i];
+        const secondTry = finder(id, element.subComponent);
+        if (secondTry)
+          return secondTry as ComponentLayoutModel;
+      }
+      return null as ComponentLayoutModel
+    }
+
+    return finder(id, this.componentesEdicao);
+  }
+
+  treeViewItemSelecionado(treeViewItem: PoTreeViewItem) {
+
+    const disMark = (dismarkItem: PoTreeViewItem) => {
+      dismarkItem.selected = false;
+
+      if (dismarkItem.subItems != undefined || dismarkItem.subItems != null) {
+        for (let i = 0; i < dismarkItem.subItems.length; i++) {
+          const element = dismarkItem.subItems[i];
+          disMark(element);
+        }
+      }
+    }
+    disMark(treeViewItem);
+    console.log(JSON.stringify(treeViewItem));
+    const search = this.buscarComponentPorId(treeViewItem.value as string);
+    console.log('search');
+    console.log(JSON.stringify(search));
+    this.treeViewData = [...this.treeViewData];
+    this.componentEdicao = search;
+  }
+
+  closeModal() {
+    this.exibirConfig = false;
+  }
+
+  openConfig() {
+    this.exibirConfig = true;
+    this.componentesEdicao = [...this.components];
+  }
+
+  exibirConfig = false;
 
   public componentsOptions: Array<PoComboOption> = [];
 
-  _componentParaAdd: Type<any> = null;
-  public get componentParaAdd() {
-    return this._componentParaAdd;
+  _componentEdicao: ComponentLayoutModel = null;
+  public get componentEdicao() {
+    return this._componentEdicao;
+    ;
   }
-  public set componentParaAdd(value: Type<any>) {
-    this._componentParaAdd = value;
+  public set componentEdicao(value: ComponentLayoutModel) {
+    this._componentEdicao = value;
+    this.atualizarProriedadesComponente(value);
+  }
 
+  changeComponentCombo() {
+    this.atualizarProriedadesComponente(this.componentEdicao);
+  }
+
+
+  obterItemTreeListPorId(id: string) {
+    const finder = (id: string, parents: PoTreeViewItem[]): PoTreeViewItem => {
+
+      const firstTry = parents.find(p => p.value == id);
+
+      if (firstTry)
+        return firstTry as PoTreeViewItem;
+
+      for (let i = 0; i < parents.length; i++) {
+        const element = parents[i];
+        const secondTry = finder(id, element.subItems);
+        if (secondTry)
+          return secondTry as PoTreeViewItem;
+      }
+      return null as PoTreeViewItem
+    }
+
+    return finder(id, this.treeViewData);
+  }
+
+
+  confirmarEdicaoComponente() {
+
+    this.componentEdicao.data = {};
+
+    for (let i = 0; i < this.componentProperties.length; i++) {
+      const element = this.componentProperties[i];
+      this.componentEdicao.data[element.name] = element.value;
+    }
+
+    const treeViewItem = this.obterItemTreeListPorId(this.componentEdicao.id);
+    treeViewItem.label = (this.componentEdicao.component != null) ? this.componentEdicao.component.name : 'novo';
+
+    this.treeViewData = [...this.treeViewData];
+    this.componentEdicao = null;
+  }
+
+
+  adicionarSubComponentes() {
+    if (this.componentEdicao) {
+      this.componentEdicao.subComponent.push({
+        id: uuidv4(),
+        component: null,
+        data: {},
+        subComponent: []
+      });
+      this.atualizarTreeView();
+    }
+  }
+
+  atualizarProriedadesComponente(value: ComponentLayoutModel) {
     this.componentProperties = [];
+    if (value == null || value == undefined) {
+      return;
+    }
 
+    if (value.component == null || value.component == undefined) {
+      return;
+    }
     const componentRef = this.resolver
-      .resolveComponentFactory(this.componentParaAdd)
+      .resolveComponentFactory(this.componentEdicao.component)
       .create(this.injector);
 
     let descriptor = { ...Object.getOwnPropertyDescriptors(componentRef.instance) };
@@ -142,11 +260,6 @@ export class AppComponent {
         });
       }
     }
-
-
-
-    const teste = '';
   }
-
   componentProperties: any[] = [];
 }

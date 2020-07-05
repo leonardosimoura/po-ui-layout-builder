@@ -28,6 +28,29 @@ export class ComponentLayoutComponent implements OnInit {
     );
   }
 
+
+  gerarSubComponents(componente: ComponentLayoutModel) {
+    const subComponents = [];
+
+    for (let i = 0; i < componente.subComponent.length; i++) {
+      const element = componente.subComponent[i];
+      const subComponentFactory = this.resolver.resolveComponentFactory(
+        element.component
+      );
+
+      const segundoNivel = this.gerarSubComponents(element);
+      const subcomp = subComponentFactory.create(this.injector, segundoNivel);
+      for (const dataKey in element.data) {
+        subcomp.instance[dataKey] = element.data[dataKey];
+      }
+      subcomp.hostView.detectChanges();
+      subComponents.push(
+        [subcomp.location.nativeElement]
+      );
+    }
+    return subComponents;
+  }
+
   ngOnInit(): void {
     setTimeout(() => {
 
@@ -36,23 +59,8 @@ export class ComponentLayoutComponent implements OnInit {
         this.componentData.component
       );
 
-      const subComponents = [];
 
-      for (let i = 0; i < this.componentData.subComponent.length; i++) {
-        const element = this.componentData.subComponent[i];
-        const subComponentFactory = this.resolver.resolveComponentFactory(
-          element.component
-        );
-        const subcomp = subComponentFactory.create(this.injector);
-        for (const dataKey in element.data) {
-          subcomp.instance[dataKey] = element.data[dataKey];
-        }
-        subcomp.hostView.detectChanges();
-        subComponents.push(
-          [subcomp.location.nativeElement]
-        );
-      }
-      const componentRef = this.viewContainer.createComponent(componentFactory, 0, this.injector, subComponents);
+      const componentRef = this.viewContainer.createComponent(componentFactory, 0, this.injector, this.gerarSubComponents(this.componentData));
       for (const dataKey in this.componentData.data) {
         componentRef.instance[dataKey] = this.componentData.data[dataKey];
       }

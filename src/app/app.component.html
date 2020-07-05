@@ -1,33 +1,58 @@
-<div class="po-wrapper">
-  <po-menu [p-menus]="[{ label: 'PO UI - Angular Framework', link: '/' }]"
+<!-- <div class="po-wrapper"> -->
+<!-- <po-menu [p-menus]="[{ label: 'PO UI - Angular Framework', link: '/' }]"
     p-logo="https://po-ui.io/assets/graphics/po.png" p-short-logo="https://po-ui.io/assets/graphics/po.png">
-  </po-menu>
+  </po-menu> -->
+<!-- </div> -->
 
-  <po-page-default p-title="Teste" [p-actions]="actions">
-    <app-component-layout *ngFor="let item of components;" [componentData]="item"></app-component-layout>
-  </po-page-default>
 
-  <po-modal p-title="Component" [p-primary-action]="confirm" [p-secondary-action]="close">
-    <form #componentsForm>
+<po-page-default p-title="Po Layout Builder" [p-actions]="actions">
 
-      <div class="po-row">
-        <po-combo class="po-md-12" name="componentParaAdd" p-label="Componente:" [p-field-value]
-          [(ngModel)]="componentParaAdd" p-required [p-options]="componentsOptions">
-        </po-combo>
-      </div>
+  <po-container [style.display]="(exibirConfig)?'block':'none'">
 
-      <div class="po-row">
+    <div class="po-row">
+      <po-button p-type="danger" p-label="Novo Componente" (p-click)='adicionarComponente()'>
 
-        <po-list-view p-property-title="name" [p-items]="componentProperties">
-          <ng-template p-list-view-content-template let-item>
-            <div class="po-row">
-              <po-input name="input" [(ngModel)]="item.value"></po-input>
-            </div>
-          </ng-template>
-        </po-list-view>
-      </div>
+      </po-button>
+    </div>
+    <div class="po-row">
+      <po-widget class="po-lg-6 po-mb-1" p-title="Componentes">
 
-    </form>
-  </po-modal>
+        <po-tree-view [p-selectable]='true' [p-items]="treeViewData" (p-selected)='treeViewItemSelecionado($event)'>
+        </po-tree-view>
+      </po-widget>
 
-</div>
+      <po-widget class="po-lg-6 po-mb-1" p-title="Edição" (p-primary-action)="confirmarEdicaoComponente()"
+        p-primary-label="Confirmar" (p-secondary-action)="adicionarSubComponentes()" p-secondary-label="Add Filhos">
+
+        <div class="po-row" *ngIf="componentEdicao != null">
+          <po-combo class="po-md-12" name="ComponentCombo" p-label="Componente:" [p-field-value]
+            [(ngModel)]="componentEdicao.component" p-required [p-options]="componentsOptions"
+            (p-change)="changeComponentCombo()">
+          </po-combo>
+        </div>
+
+        <div class="po-row" *ngIf="componentEdicao != null">
+          <po-list-view p-property-title="name" [p-items]="componentProperties">
+            <ng-template p-list-view-content-template let-item>
+              <div class="po-row">
+                <po-input name="input" [(ngModel)]="item.value"></po-input>
+              </div>
+            </ng-template>
+          </po-list-view>
+        </div>
+
+
+      </po-widget>
+    </div>
+    <div class="po-row">
+      <po-button p-type="danger" p-label="Cancelar" class="po-mr-5" (p-click)='closeModal()'>
+
+      </po-button>
+      <po-button p-label="Confirmar" p-type="primary" (p-click)='confirmarAlteracoes()'>
+
+      </po-button>
+    </div>
+  </po-container>
+
+  <app-component-layout *ngFor="let item of components;" [componentData]="item"></app-component-layout>
+</po-page-default>
