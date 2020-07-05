@@ -7,31 +7,38 @@
 
 <po-page-default p-title="Po Layout Builder" [p-actions]="actions">
 
-  <po-container [style.display]="(exibirConfig)?'block':'none'">
+  <po-widget *ngIf="exibirConfig" p-title="Configuração" (p-primary-action)="confirmarAlteracoes()"
+    p-primary-label="Confirmar" (p-secondary-action)="closeModal()" p-secondary-label="Cancelar">
 
-    <div class="po-row">
-      <po-button p-type="danger" p-label="Novo Componente" (p-click)='adicionarComponente()'>
+    <div class="po-row po-mb-1">
+      <po-button p-type="primary" p-label="Novo Componente" (p-click)='adicionarComponente()'>
+
+      </po-button>
+
+      <po-button class="po-ml-1" p-type="danger" p-label="Limpar" (p-click)='limparTela()'>
 
       </po-button>
     </div>
     <div class="po-row">
-      <po-widget class="po-lg-6 po-mb-1" p-title="Componentes">
+      <po-widget class="po-lg-6 po-mb-1" p-height="700" p-title="Componentes">
 
         <po-tree-view [p-selectable]='true' [p-items]="treeViewData" (p-selected)='treeViewItemSelecionado($event)'>
         </po-tree-view>
       </po-widget>
 
-      <po-widget class="po-lg-6 po-mb-1" p-title="Edição" (p-primary-action)="confirmarEdicaoComponente()"
-        p-primary-label="Confirmar" (p-secondary-action)="adicionarSubComponentes()" p-secondary-label="Add Filhos">
+      <po-widget class="po-lg-6 po-mb-1" p-height="700" *ngIf="componentEdicao != null"
+        [p-title]="'Edição Componente' + ( (componentEdicao?.component?.name)?componentEdicao?.component?.name :'')"
+        (p-primary-action)="confirmarEdicaoComponente()" p-primary-label="Confirmar"
+        (p-secondary-action)="adicionarSubComponentes()" p-secondary-label="Add Filhos">
 
-        <div class="po-row" *ngIf="componentEdicao != null">
+        <div class="po-row">
           <po-combo class="po-md-12" name="ComponentCombo" p-label="Componente:" [(ngModel)]="componentEdicao.component"
             p-required [p-options]="componentsOptions" (p-change)="changeComponentCombo()" [p-filter-mode]="'contains'">
           </po-combo>
         </div>
 
         <div class="po-row" *ngIf="componentEdicao != null">
-          <po-list-view class="po-md-12" p-property-title="name" p-height="500" [p-items]="componentProperties">
+          <po-list-view class="po-md-12" p-property-title="name" [p-items]="componentProperties">
             <ng-template p-list-view-content-template let-item>
               <div class="po-row">
                 <po-switch [(ngModel)]="item.showEditor" p-label="Exibir editor avançado?" p-label-off=" "
@@ -53,15 +60,15 @@
 
       </po-widget>
     </div>
-    <div class="po-row">
+    <!-- <div class="po-row">
       <po-button p-type="danger" p-label="Cancelar" class="po-mr-5" (p-click)='closeModal()'>
 
       </po-button>
       <po-button p-label="Confirmar" p-type="primary" (p-click)='confirmarAlteracoes()'>
 
       </po-button>
-    </div>
-  </po-container>
+    </div> -->
+  </po-widget>
 
   <app-component-layout *ngFor="let item of components;" [componentData]="item"></app-component-layout>
 </po-page-default>

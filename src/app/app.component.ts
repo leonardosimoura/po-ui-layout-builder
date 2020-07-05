@@ -3,7 +3,7 @@ import { ComponentLayoutModel } from 'src/models/component.layout.model';
 import { PoPageDefaultComponent, PoTableComponent, PoComponentsModule, PoModalAction, PoNotificationService, PoModalComponent, PoComboOption, PoPageAction, PoButtonComponent, PoTreeViewItem, PoSelectOption, PoListViewAction } from '@po-ui/ng-components';
 import { NgForm } from '@angular/forms';
 import { v4 as uuidv4 } from 'uuid';
-import { PorowComponent } from './porow/porow.component';
+import { PoRowComponent } from './porow/porow.component';
 
 @Component({
   selector: 'app-root',
@@ -23,7 +23,7 @@ export class AppComponent {
 
   constructor(private poNotification: PoNotificationService, private resolver: ComponentFactoryResolver, private injector: Injector) {
     this.listaComponents = this.obterComponentes(PoComponentsModule);
-    this.listaComponents.push(PorowComponent);
+    this.listaComponents.push(PoRowComponent);
     this.componentsOptions = this.listaComponents.map<PoComboOption>((item) => {
       return { label: item.name, value: item } as unknown as PoComboOption;
     });
@@ -50,7 +50,8 @@ export class AppComponent {
 
   actions: PoPageAction[] = [
     {
-      label: "Config",
+      label: "Configuração",
+      icon: 'po-icon po-icon-settings',
       action: this.openConfig.bind(this)
     }
   ]
@@ -79,6 +80,16 @@ export class AppComponent {
     this.atualizarTreeView();
   }
   confirmarAlteracoesComponentes() {
+
+    const removerNaoConfigurados = (itens: ComponentLayoutModel[]): ComponentLayoutModel[] => {
+
+      for (let i = 0; i < itens.length; i++) {
+        const element = itens[i];
+        element.subComponent = removerNaoConfigurados(element.subComponent);
+      }
+      return itens.filter(f => f.component != null);
+    }
+    this.componentesEdicao = removerNaoConfigurados(this.componentesEdicao);
     this.components = [];
     setTimeout(() => {
       this.components = [...this.componentesEdicao];
@@ -86,29 +97,40 @@ export class AppComponent {
   }
 
   atualizarTreeView() {
+    this.treeViewData = [];
 
-    const mapper = (item: ComponentLayoutModel) => {
+    const mapper = (item: ComponentLayoutModel, expanded: boolean = true) => {
       const poTreeViewModel: PoTreeViewItem = {
         label: (item.component != null) ? item.component.name : "Novo Componente",
-        value: item.id //item
+        value: item.id
       };
+
+      if (poTreeViewModel.value == this.componentEdicao?.id) {
+        poTreeViewModel.expanded = true;
+      }
 
       const subItems: PoTreeViewItem[] = [];
 
       for (let i = 0; i < item.subComponent.length; i++) {
         const element = item.subComponent[i];
-        subItems.push(mapper(element));
+        subItems.push(mapper(element, poTreeViewModel.expanded));
       }
       poTreeViewModel.subItems = subItems;
 
       return poTreeViewModel;
     };
 
-    this.treeViewData = [];
     for (let i = 0; i < this.componentesEdicao.length; i++) {
       const element = this.componentesEdicao[i];
       this.treeViewData.push(mapper(element))
     }
+  }
+
+  limparTela() {
+    this.componentEdicao = null;
+    this.components = [];
+    this.componentesEdicao = [];
+    this.treeViewData = [];
   }
 
   buscarComponentPorId(id: string) {
@@ -261,10 +283,13 @@ export class AppComponent {
       if (element == null || element.set) {
         this.componentProperties.push({
           name: key,
-          value: null
+          value: (value.data[key]) ? value.data[key] : element?.value,
         });
+
       }
     }
+
+
   }
   componentProperties: any[] = [];
 

@@ -1,5 +1,5 @@
-import { Component, OnInit, ViewChild, ViewContainerRef, ComponentFactoryResolver, Type, Input, NgModule, Inject, Injector, ApplicationRef } from '@angular/core';
-import { PoPageDefaultComponent, PoTableComponent, PoModule, PoComponentsModule } from '@po-ui/ng-components';
+import { Component, OnInit, ViewChild, ViewContainerRef, ComponentFactoryResolver, Type, Input, NgModule, Inject, Injector, ApplicationRef, ComponentRef, QueryList } from '@angular/core';
+import { PoPageDefaultComponent, PoTableComponent, PoModule, PoComponentsModule, PoTabsComponent, PoTabComponent } from '@po-ui/ng-components';
 import { ComponentLayoutModel } from 'src/models/component.layout.model';
 
 @Component({
@@ -30,6 +30,8 @@ export class ComponentLayoutComponent implements OnInit {
 
   gerarSubComponents(componente: ComponentLayoutModel) {
     const subComponentesGerados = [];
+    const subComponentesNativeElementsGerados = [];
+
     for (let i = 0; i < componente.subComponent.length; i++) {
       const element = componente.subComponent[i];
       const subComponentFactory = this.resolver.resolveComponentFactory(
@@ -37,14 +39,16 @@ export class ComponentLayoutComponent implements OnInit {
       );
 
       const segundoNivel = this.gerarSubComponents(element);
-      const subcomp = subComponentFactory.create(this.injector, segundoNivel);
+      const subcomp = subComponentFactory.create(this.injector, segundoNivel.subComponentesNativeElementsGerados);
       for (const dataKey in element.data) {
         subcomp.instance[dataKey] = element.data[dataKey];
       }
       subcomp.hostView.detectChanges();
-      subComponentesGerados.push(subcomp.location.nativeElement);
+      subComponentesNativeElementsGerados.push(subcomp.location.nativeElement);
+      subComponentesGerados.push(subcomp.instance);
     }
-    return [[...subComponentesGerados]];
+    return { subComponentesGerados: [subComponentesGerados], subComponentesNativeElementsGerados: [subComponentesNativeElementsGerados], };
+    //return [...subComponentesGerados];
   }
 
   ngOnInit(): void {
@@ -55,12 +59,25 @@ export class ComponentLayoutComponent implements OnInit {
         this.componentData.component
       );
 
+      const subComponentes = this.gerarSubComponents(this.componentData);
 
-      const componentRef = this.viewContainer.createComponent(componentFactory, 0, this.injector, this.gerarSubComponents(this.componentData));
+      let componentRef: ComponentRef<any> = null;
+      componentRef = this.viewContainer.createComponent(componentFactory, 0, this.injector, subComponentes.subComponentesNativeElementsGerados);
+
       for (const dataKey in this.componentData.data) {
         componentRef.instance[dataKey] = this.componentData.data[dataKey];
       }
 
+      //PoTabsComponent não esta gerando os tabs header
+      if (this.componentData.component == PoTabsComponent) {
+
+        setTimeout(() => {
+          const t = new QueryList<PoTabComponent>();
+          t.reset([...subComponentes.subComponentesGerados]);
+          componentRef.instance.tabs = t;
+          componentRef.hostView.detectChanges();
+        }, 100);
+      }
 
     }, 500);
   }

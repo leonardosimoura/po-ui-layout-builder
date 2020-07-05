@@ -6,14 +6,14 @@ import { AppComponent } from './app.component';
 import { PoModule } from '@po-ui/ng-components';
 import { ComponentLayoutComponent } from './component-layout/component-layout.component';
 import { FormsModule } from '@angular/forms';
-import { PorowComponent } from './porow/porow.component';
+import { PoRowComponent } from './porow/porow.component';
 import { PoCodeEditorModule } from '@po-ui/ng-code-editor';
 
 @NgModule({
   declarations: [
     AppComponent,
     ComponentLayoutComponent,
-    PorowComponent
+    PoRowComponent
   ],
   imports: [
     BrowserModule,

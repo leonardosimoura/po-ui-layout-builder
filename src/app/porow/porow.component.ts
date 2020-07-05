@@ -5,7 +5,7 @@ import { Component, OnInit } from '@angular/core';
   templateUrl: './porow.component.html',
   styleUrls: ['./porow.component.css']
 })
-export class PorowComponent implements OnInit {
+export class PoRowComponent implements OnInit {
 
   constructor() { }
 
