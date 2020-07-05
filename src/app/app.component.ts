@@ -81,7 +81,11 @@ export class AppComponent {
     this.components.push({
       component: this.componentParaAdd,
       data: data,
-      subComponent: []
+      subComponent: [{
+        component: PoButtonComponent,
+        data: { label: '2' },
+        subComponent: []
+      }]
     })
     this.closeModal();
   }
