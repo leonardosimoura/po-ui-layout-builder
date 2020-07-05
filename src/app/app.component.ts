@@ -226,7 +226,7 @@ export class AppComponent {
 
     for (let i = 0; i < this.componentProperties.length; i++) {
       const element = this.componentProperties[i];
-      if (element.value) {
+      if (element.value && element.value != '') {
         try {
           this.componentEdicao.data[element.name] = JSON.parse(element.value);
         } catch (error) {
@@ -283,7 +283,7 @@ export class AppComponent {
       if (element == null || element.set) {
         this.componentProperties.push({
           name: key,
-          value: (value.data[key]) ? value.data[key] : element?.value,
+          value: (value.data[key]) ? value.data[key] : '',
         });
 
       }

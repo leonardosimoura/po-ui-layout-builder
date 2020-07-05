@@ -684,7 +684,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
           for (var i = 0; i < this.componentProperties.length; i++) {
             var element = this.componentProperties[i];
 
-            if (element.value) {
+            if (element.value && element.value != '') {
               try {
                 this.componentEdicao.data[element.name] = JSON.parse(element.value);
               } catch (error) {
@@ -740,7 +740,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
             if (_element == null || _element.set) {
               this.componentProperties.push({
                 name: _key,
-                value: value.data[_key] ? value.data[_key] : _element === null || _element === void 0 ? void 0 : _element.value
+                value: value.data[_key] ? value.data[_key] : ''
               });
             }
           }
