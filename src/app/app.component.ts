@@ -287,7 +287,7 @@ export class AppComponent {
         }
 
         try {
-          propriedade.value = (value.data[key]) ? JSON.stringify(value.data[key]) : '';
+          propriedade.value = (value.data[key] && value.data[key] instanceof Object) ? JSON.stringify(value.data[key]) : '';
         } catch (error) {
           propriedade.value = (value.data[key]) ? value.data[key] : '';
         }
