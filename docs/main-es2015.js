@@ -356,7 +356,7 @@ class AppComponent {
         this.componentEdicao.data = {};
         for (let i = 0; i < this.componentProperties.length; i++) {
             const element = this.componentProperties[i];
-            if (element.value && element.value != '') {
+            if (element.value != undefined && element.value != null && element.value != '') {
                 try {
                     this.componentEdicao.data[element.name] = JSON.parse(element.value);
                 }
@@ -402,10 +402,17 @@ class AppComponent {
         for (const key in descriptor) {
             const element = descriptor[key];
             if (element == null || element.set) {
-                this.componentProperties.push({
+                const propriedade = {
                     name: key,
-                    value: (value.data[key]) ? value.data[key] : '',
-                });
+                    value: ''
+                };
+                try {
+                    propriedade.value = (value.data[key]) ? JSON.stringify(value.data[key]) : '';
+                }
+                catch (error) {
+                    propriedade.value = (value.data[key]) ? value.data[key] : '';
+                }
+                this.componentProperties.push(propriedade);
             }
         }
     }

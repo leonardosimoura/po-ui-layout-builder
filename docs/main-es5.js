@@ -684,7 +684,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
           for (var i = 0; i < this.componentProperties.length; i++) {
             var element = this.componentProperties[i];
 
-            if (element.value && element.value != '') {
+            if (element.value != undefined && element.value != null && element.value != '') {
               try {
                 this.componentEdicao.data[element.name] = JSON.parse(element.value);
               } catch (error) {
@@ -738,10 +738,18 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
             var _element = descriptor[_key];
 
             if (_element == null || _element.set) {
-              this.componentProperties.push({
+              var propriedade = {
                 name: _key,
-                value: value.data[_key] ? value.data[_key] : ''
-              });
+                value: ''
+              };
+
+              try {
+                propriedade.value = value.data[_key] ? JSON.stringify(value.data[_key]) : '';
+              } catch (error) {
+                propriedade.value = value.data[_key] ? value.data[_key] : '';
+              }
+
+              this.componentProperties.push(propriedade);
             }
           }
         }
