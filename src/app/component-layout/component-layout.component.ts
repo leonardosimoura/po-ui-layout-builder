@@ -47,7 +47,9 @@ export class ComponentLayoutComponent implements OnInit {
   }
 
   configuracoesAdicionais(comp: ComponentLayoutModel, subComponentes: { subComponentesGerados: any[][] }, componentRef: ComponentRef<any>) {
-    //PoTabsComponent não esta gerando os tabs header
+
+    comp.componentRef = componentRef;
+
     if (comp.component == PoTabsComponent) {
 
       setTimeout(() => {

@@ -1,9 +1,4 @@
-<!-- <div class="po-wrapper"> -->
-<!-- <po-menu [p-menus]="[{ label: 'PO UI - Angular Framework', link: '/' }]"
-    p-logo="https://po-ui.io/assets/graphics/po.png" p-short-logo="https://po-ui.io/assets/graphics/po.png">
-  </po-menu> -->
-<!-- </div> -->
-
+<a #componentDownloader [href]="fileUrl" style="display: none;" download="componente.txt"></a>
 
 <po-page-default p-title="PO Layout Builder" [p-actions]="actions">
 
@@ -56,19 +51,8 @@
             </ng-template>
           </po-list-view>
         </div>
-
-
       </po-widget>
     </div>
-    <!-- <div class="po-row">
-      <po-button p-type="danger" p-label="Cancelar" class="po-mr-5" (p-click)='closeModal()'>
-
-      </po-button>
-      <po-button p-label="Confirmar" p-type="primary" (p-click)='confirmarAlteracoes()'>
-
-      </po-button>
-    </div> -->
   </po-widget>
-
   <app-component-layout *ngFor="let item of components;" [componentData]="item"></app-component-layout>
 </po-page-default>

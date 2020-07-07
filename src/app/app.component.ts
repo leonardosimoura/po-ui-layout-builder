@@ -1,9 +1,10 @@
-import { Component, Type, ViewChild, ComponentFactoryResolver, Injector, NgModule, NgModuleRef } from '@angular/core';
+import { Component, Type, ViewChild, ComponentFactoryResolver, Injector, NgModule, NgModuleRef, ElementRef } from '@angular/core';
 import { ComponentLayoutModel } from 'src/models/component.layout.model';
 import { PoPageDefaultComponent, PoTableComponent, PoComponentsModule, PoModalAction, PoNotificationService, PoModalComponent, PoComboOption, PoPageAction, PoButtonComponent, PoTreeViewItem, PoSelectOption, PoListViewAction, PoModule } from '@po-ui/ng-components';
 import { NgForm } from '@angular/forms';
 import { v4 as uuidv4 } from 'uuid';
 import { PoRowComponent } from './porow/porow.component';
+import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-root',
@@ -24,7 +25,8 @@ export class AppComponent {
   constructor(
     private poNotification: PoNotificationService,
     private resolver: ComponentFactoryResolver,
-    private injector: Injector) {
+    private injector: Injector,
+    private sanitizer: DomSanitizer) {
     this.listaComponents = this.obterComponentes(PoComponentsModule);
     this.listaComponents.push(PoRowComponent);
     this.componentsOptions = this.listaComponents.map<PoComboOption>((item) => {
@@ -47,7 +49,6 @@ export class AppComponent {
         components.push(element);
       }
     }
-
     return components;
   }
 
@@ -56,8 +57,14 @@ export class AppComponent {
       label: "Configuração",
       icon: 'po-icon po-icon-settings',
       action: this.openConfig.bind(this)
+    },
+    {
+      label: "Exportar HTML",
+      icon: 'po-icon po-icon-export',
+      action: this.exportarComponentes.bind(this)
     }
   ]
+
 
 
   //Edição
@@ -72,13 +79,71 @@ export class AppComponent {
     this.closeModal();
   }
 
+  fileUrl;
+  @ViewChild("componentDownloader") componentDownloader: ElementRef;
+  exportarComponentes() {
+    let finalStr = '';
+
+    for (let i = 0; i < this.components.length; i++) {
+      const element = this.components[i];
+      finalStr = finalStr + this.gerarArquivoComponente(element);
+    }
+    const blob = new Blob([finalStr], { type: 'application/octet-stream' });
+
+    this.fileUrl = this.sanitizer.bypassSecurityTrustResourceUrl(window.URL.createObjectURL(blob));
+    setTimeout(() => {
+      this.componentDownloader.nativeElement.click();
+    }, 500);
+  }
+
+  private gerarArquivoComponente(componente: ComponentLayoutModel) {
+    let str = '';
+    let strInputs = '';
+    const selector = componente.componentRef.componentType['decorators'][0].args[0].selector;
+
+    for (const key in componente.componentRef.componentType["ɵcmp"].declaredInputs) {
+      const element = componente.componentRef.componentType["ɵcmp"].declaredInputs[key];
+      let tempValue = '';
+      if (componente.data[key.substr(2)]) {
+
+
+        try {
+          if (componente.data[key.substr(2)]) {
+            if (componente.data[key.substr(2)] instanceof Object) {
+              tempValue = "'" + JSON.stringify(componente.data[key.substr(2)]) + "'";
+            }
+            else {
+              tempValue = '"' + "'" + ((componente.data[key.substr(2)]) ? componente.data[key.substr(2)] : '').toString() + "'" + '"';
+            }
+          }
+        } catch (error) {
+          tempValue = '"' + "'" + ((componente.data[key.substr(2)]) ? componente.data[key.substr(2)] : '').toString() + "'" + '"';
+        }
+
+        strInputs = strInputs + ' [' + key + ']=' + tempValue;
+
+      }
+    }
+
+    let strSubComponentes = '';
+
+    for (let i = 0; i < componente.subComponent.length; i++) {
+      const element = componente.subComponent[i];
+      strSubComponentes = strSubComponentes + this.gerarArquivoComponente(element);
+    }
+
+    str = '<' + selector + strInputs + '> ' + strSubComponentes + ' </' + selector + '>';
+
+    return str;
+  }
 
   adicionarComponente() {
     this.componentesEdicao.push({
       id: uuidv4(),
       component: null,
       data: {},
-      subComponent: []
+      subComponent: [],
+      componentRef: null
     });
     this.atualizarTreeView();
   }
@@ -252,7 +317,8 @@ export class AppComponent {
         id: uuidv4(),
         component: null,
         data: {},
-        subComponent: []
+        subComponent: [],
+        componentRef: null
       });
       this.atualizarTreeView();
     }
