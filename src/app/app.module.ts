@@ -20,10 +20,12 @@ import { PoCodeEditorModule } from '@po-ui/ng-code-editor';
     BrowserAnimationsModule,
     AppRoutingModule,
     FormsModule,
+    PoCodeEditorModule,
     PoModule,
-    PoCodeEditorModule
   ],
-  providers: [],
+  providers: [
+
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -1,6 +1,6 @@
-import { Component, Type, ViewChild, ComponentFactoryResolver, Injector } from '@angular/core';
+import { Component, Type, ViewChild, ComponentFactoryResolver, Injector, NgModule, NgModuleRef } from '@angular/core';
 import { ComponentLayoutModel } from 'src/models/component.layout.model';
-import { PoPageDefaultComponent, PoTableComponent, PoComponentsModule, PoModalAction, PoNotificationService, PoModalComponent, PoComboOption, PoPageAction, PoButtonComponent, PoTreeViewItem, PoSelectOption, PoListViewAction } from '@po-ui/ng-components';
+import { PoPageDefaultComponent, PoTableComponent, PoComponentsModule, PoModalAction, PoNotificationService, PoModalComponent, PoComboOption, PoPageAction, PoButtonComponent, PoTreeViewItem, PoSelectOption, PoListViewAction, PoModule } from '@po-ui/ng-components';
 import { NgForm } from '@angular/forms';
 import { v4 as uuidv4 } from 'uuid';
 import { PoRowComponent } from './porow/porow.component';
@@ -21,7 +21,10 @@ export class AppComponent {
 
 
 
-  constructor(private poNotification: PoNotificationService, private resolver: ComponentFactoryResolver, private injector: Injector) {
+  constructor(
+    private poNotification: PoNotificationService,
+    private resolver: ComponentFactoryResolver,
+    private injector: Injector) {
     this.listaComponents = this.obterComponentes(PoComponentsModule);
     this.listaComponents.push(PoRowComponent);
     this.componentsOptions = this.listaComponents.map<PoComboOption>((item) => {
@@ -264,6 +267,7 @@ export class AppComponent {
     if (value.component == null || value.component == undefined) {
       return;
     }
+
     const componentRef = this.resolver
       .resolveComponentFactory(this.componentEdicao.component)
       .create(this.injector);
@@ -287,7 +291,17 @@ export class AppComponent {
         }
 
         try {
-          propriedade.value = (value.data[key] && value.data[key] instanceof Object) ? JSON.stringify(value.data[key]) : '';
+
+          if (value.data[key]) {
+            if (value.data[key] instanceof Object) {
+              propriedade.value = JSON.stringify(value.data[key]);
+            }
+            else {
+              propriedade.value = (value.data[key]) ? value.data[key] : '';
+            }
+          }
+
+
         } catch (error) {
           propriedade.value = (value.data[key]) ? value.data[key] : '';
         }

@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild, ViewContainerRef, ComponentFactoryResolver, Type, Input, NgModule, Inject, Injector, ApplicationRef, ComponentRef, QueryList } from '@angular/core';
-import { PoPageDefaultComponent, PoTableComponent, PoModule, PoComponentsModule, PoTabsComponent, PoTabComponent } from '@po-ui/ng-components';
+import { PoPageDefaultComponent, PoTableComponent, PoModule, PoComponentsModule, PoTabsComponent, PoTabComponent, PoChartComponent, PoStepperComponent, PoStepComponent } from '@po-ui/ng-components';
 import { ComponentLayoutModel } from 'src/models/component.layout.model';
 
 @Component({
@@ -77,6 +77,22 @@ export class ComponentLayoutComponent implements OnInit {
           componentRef.instance.tabs = t;
           componentRef.hostView.detectChanges();
         }, 100);
+      }
+
+      if (this.componentData.component == PoStepperComponent) {
+        setTimeout(() => {
+          const t = new QueryList<PoStepComponent>();
+          t.reset([...subComponentes.subComponentesGerados]);
+          componentRef.instance.poSteps = t;
+          componentRef.hostView.detectChanges();
+          componentRef.instance.ngAfterContentInit();
+        }, 500);
+      }
+
+      if (this.componentData.component == PoChartComponent) {
+        setTimeout(() => {
+          componentRef.instance.rebuildComponent();
+        }, 500);
       }
 
     }, 500);
