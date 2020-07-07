@@ -60,12 +60,10 @@ export class AppComponent {
     },
     {
       label: "Exportar HTML",
-      icon: 'po-icon po-icon-export',
+      icon: 'po-icon po-icon-download',
       action: this.exportarComponentes.bind(this)
     }
   ]
-
-
 
   //Edição
 

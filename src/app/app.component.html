@@ -6,11 +6,13 @@
     p-primary-label="Confirmar" (p-secondary-action)="closeModal()" p-secondary-label="Cancelar">
 
     <div class="po-row po-mb-1">
-      <po-button p-type="primary" p-label="Novo Componente" (p-click)='adicionarComponente()'>
+      <po-button p-type="primary" p-label="Componente" p-icon='po-icon po-icon-plus-circle'
+        (p-click)='adicionarComponente()'>
 
       </po-button>
 
-      <po-button class="po-ml-1" p-type="danger" p-label="Limpar" (p-click)='limparTela()'>
+      <po-button class="po-ml-1" p-type="danger" p-icon="po-icon po-icon-delete" p-label="Limpar"
+        (p-click)='limparTela()'>
 
       </po-button>
     </div>
@@ -41,7 +43,8 @@
                 </po-switch>
               </div>
               <div class="po-row" *ngIf="item.showEditor == undefined || item.showEditor == false">
-                <po-input name="input" class="po-md-12" [(ngModel)]="item.value"></po-input>
+                <po-input name="input" p-clean='true' p-no-autocomplete='true' class="po-md-12"
+                  [(ngModel)]="item.value"></po-input>
 
               </div>
               <div class="po-row" *ngIf="item.showEditor == true">
