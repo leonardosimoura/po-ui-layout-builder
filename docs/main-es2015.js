@@ -477,6 +477,15 @@ class AppComponent {
                 this.componentProperties.push(propriedade);
             }
         }
+        this.componentProperties = this.componentProperties.sort((a, b) => {
+            if (a.name.toUpperCase() < b.name.toUpperCase()) {
+                return -1;
+            }
+            if (a.name.toUpperCase() > b.name.toUpperCase()) {
+                return 1;
+            }
+            return 0;
+        });
     }
 }
 AppComponent.ɵfac = function AppComponent_Factory(t) { return new (t || AppComponent)(_angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdirectiveInject"](_po_ui_ng_components__WEBPACK_IMPORTED_MODULE_1__["PoNotificationService"]), _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdirectiveInject"](_angular_core__WEBPACK_IMPORTED_MODULE_0__["ComponentFactoryResolver"]), _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdirectiveInject"](_angular_core__WEBPACK_IMPORTED_MODULE_0__["Injector"]), _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdirectiveInject"](_angular_platform_browser__WEBPACK_IMPORTED_MODULE_4__["DomSanitizer"])); };

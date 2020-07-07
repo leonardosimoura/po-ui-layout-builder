@@ -831,6 +831,18 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
               this.componentProperties.push(propriedade);
             }
           }
+
+          this.componentProperties = this.componentProperties.sort(function (a, b) {
+            if (a.name.toUpperCase() < b.name.toUpperCase()) {
+              return -1;
+            }
+
+            if (a.name.toUpperCase() > b.name.toUpperCase()) {
+              return 1;
+            }
+
+            return 0;
+          });
         }
       }, {
         key: "componentEdicao",
