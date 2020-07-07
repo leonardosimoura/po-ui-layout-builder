@@ -986,6 +986,8 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
     /*! @po-ui/ng-components */
     "./node_modules/@po-ui/ng-components/__ivy_ngcc__/fesm2015/po-ui-ng-components.js");
 
+    var _c0 = ["tempViewContainer"];
+
     var ComponentLayoutComponent = /*#__PURE__*/function () {
       function ComponentLayoutComponent(resolver, injector, appRef, viewContainer) {
         _classCallCheck(this, ComponentLayoutComponent);
@@ -993,30 +995,21 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
         this.resolver = resolver;
         this.injector = injector;
         this.appRef = appRef;
-        this.viewContainer = viewContainer; //component = PoPageDefaultComponent;
+        this.viewContainer = viewContainer;
       }
 
       _createClass(ComponentLayoutComponent, [{
-        key: "decoratorOfType",
-        value: function decoratorOfType(decoratedType, decoratorType) {
-          // get all decorators off of the provided type
-          return Reflect.getOwnPropertyDescriptor(decoratedType, '__annotations__').value.find(function (annotation) {
-            return (// get the decorator that matches the requested type
-              annotation instanceof decoratorType
-            );
-          });
-        }
-      }, {
-        key: "gerarSubComponents",
-        value: function gerarSubComponents(componente) {
+        key: "gerarSubComponentes",
+        value: function gerarSubComponentes(componente) {
           var subComponentesGerados = [];
           var subComponentesNativeElementsGerados = [];
 
           for (var i = 0; i < componente.subComponent.length; i++) {
             var element = componente.subComponent[i];
             var subComponentFactory = this.resolver.resolveComponentFactory(element.component);
-            var segundoNivel = this.gerarSubComponents(element);
-            var subcomp = subComponentFactory.create(this.injector, segundoNivel.subComponentesNativeElementsGerados);
+            var segundoNivel = this.gerarSubComponentes(element); //const subcomp =   subComponentFactory.create(this.injector, segundoNivel.subComponentesNativeElementsGerados);
+
+            var subcomp = this.tempViewContainerRef.createComponent(subComponentFactory, null, this.injector, segundoNivel.subComponentesNativeElementsGerados);
 
             for (var dataKey in element.data) {
               subcomp.instance[dataKey] = element.data[dataKey];
@@ -1043,7 +1036,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
               t.reset(_toConsumableArray(subComponentes.subComponentesGerados));
               componentRef.instance.tabs = t;
               componentRef.hostView.detectChanges();
-            }, 1000);
+            }, 500);
           }
 
           if (comp.component == _po_ui_ng_components__WEBPACK_IMPORTED_MODULE_1__["PoStepperComponent"]) {
@@ -1053,14 +1046,13 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
               componentRef.instance.poSteps = t;
               componentRef.hostView.detectChanges();
               componentRef.instance.ngAfterContentInit();
-            }, 1000);
-          }
+            }, 500);
+          } // if (comp.component == PoChartComponent) {
+          //   // setTimeout(() => {
+          //   //   componentRef.instance.rebuildComponent();
+          //   // }, 1000);
+          // }
 
-          if (comp.component == _po_ui_ng_components__WEBPACK_IMPORTED_MODULE_1__["PoChartComponent"]) {
-            setTimeout(function () {
-              componentRef.instance.rebuildComponent();
-            }, 1000);
-          }
         }
       }, {
         key: "ngOnInit",
@@ -1073,7 +1065,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
             var componentFactory = _this3.resolver.resolveComponentFactory(_this3.componentData.component);
 
-            var subComponentes = _this3.gerarSubComponents(_this3.componentData);
+            var subComponentes = _this3.gerarSubComponentes(_this3.componentData);
 
             var componentRef = null;
             componentRef = _this3.viewContainer.createComponent(componentFactory, 0, _this3.injector, subComponentes.subComponentesNativeElementsGerados);
@@ -1097,12 +1089,28 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
     ComponentLayoutComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineComponent"]({
       type: ComponentLayoutComponent,
       selectors: [["app-component-layout"]],
+      viewQuery: function ComponentLayoutComponent_Query(rf, ctx) {
+        if (rf & 1) {
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵviewQuery"](_c0, true, _angular_core__WEBPACK_IMPORTED_MODULE_0__["ViewContainerRef"]);
+        }
+
+        if (rf & 2) {
+          var _t;
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵqueryRefresh"](_t = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵloadQuery"]()) && (ctx.tempViewContainerRef = _t.first);
+        }
+      },
       inputs: {
         componentData: "componentData"
       },
-      decls: 0,
+      decls: 2,
       vars: 0,
-      template: function ComponentLayoutComponent_Template(rf, ctx) {},
+      consts: [[2, "opacity", "0", "top", "0", "left", "0"], ["tempViewContainer", ""]],
+      template: function ComponentLayoutComponent_Template(rf, ctx) {
+        if (rf & 1) {
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelement"](0, "div", 0, 1);
+        }
+      },
       styles: ["\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IiIsImZpbGUiOiJzcmMvYXBwL2NvbXBvbmVudC1sYXlvdXQvY29tcG9uZW50LWxheW91dC5jb21wb25lbnQuY3NzIn0= */"]
     });
     /*@__PURE__*/
@@ -1128,6 +1136,12 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       }, {
         componentData: [{
           type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"]
+        }],
+        tempViewContainerRef: [{
+          type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["ViewChild"],
+          args: ["tempViewContainer", {
+            read: _angular_core__WEBPACK_IMPORTED_MODULE_0__["ViewContainerRef"]
+          }]
         }]
       });
     })();

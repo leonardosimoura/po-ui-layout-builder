@@ -538,28 +538,23 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+const _c0 = ["tempViewContainer"];
 class ComponentLayoutComponent {
     constructor(resolver, injector, appRef, viewContainer) {
         this.resolver = resolver;
         this.injector = injector;
         this.appRef = appRef;
         this.viewContainer = viewContainer;
-        //component = PoPageDefaultComponent;
     }
-    decoratorOfType(decoratedType, decoratorType) {
-        // get all decorators off of the provided type
-        return Reflect.getOwnPropertyDescriptor(decoratedType, '__annotations__').value.find((annotation) => 
-        // get the decorator that matches the requested type
-        annotation instanceof decoratorType);
-    }
-    gerarSubComponents(componente) {
+    gerarSubComponentes(componente) {
         const subComponentesGerados = [];
         const subComponentesNativeElementsGerados = [];
         for (let i = 0; i < componente.subComponent.length; i++) {
             const element = componente.subComponent[i];
             const subComponentFactory = this.resolver.resolveComponentFactory(element.component);
-            const segundoNivel = this.gerarSubComponents(element);
-            const subcomp = subComponentFactory.create(this.injector, segundoNivel.subComponentesNativeElementsGerados);
+            const segundoNivel = this.gerarSubComponentes(element);
+            //const subcomp =   subComponentFactory.create(this.injector, segundoNivel.subComponentesNativeElementsGerados);
+            const subcomp = this.tempViewContainerRef.createComponent(subComponentFactory, null, this.injector, segundoNivel.subComponentesNativeElementsGerados);
             for (const dataKey in element.data) {
                 subcomp.instance[dataKey] = element.data[dataKey];
             }
@@ -579,7 +574,7 @@ class ComponentLayoutComponent {
                 t.reset([...subComponentes.subComponentesGerados]);
                 componentRef.instance.tabs = t;
                 componentRef.hostView.detectChanges();
-            }, 1000);
+            }, 500);
         }
         if (comp.component == _po_ui_ng_components__WEBPACK_IMPORTED_MODULE_1__["PoStepperComponent"]) {
             setTimeout(() => {
@@ -588,19 +583,19 @@ class ComponentLayoutComponent {
                 componentRef.instance.poSteps = t;
                 componentRef.hostView.detectChanges();
                 componentRef.instance.ngAfterContentInit();
-            }, 1000);
+            }, 500);
         }
-        if (comp.component == _po_ui_ng_components__WEBPACK_IMPORTED_MODULE_1__["PoChartComponent"]) {
-            setTimeout(() => {
-                componentRef.instance.rebuildComponent();
-            }, 1000);
-        }
+        // if (comp.component == PoChartComponent) {
+        //   // setTimeout(() => {
+        //   //   componentRef.instance.rebuildComponent();
+        //   // }, 1000);
+        // }
     }
     ngOnInit() {
         setTimeout(() => {
             this.viewContainer.clear(); // clear all views
             const componentFactory = this.resolver.resolveComponentFactory(this.componentData.component);
-            const subComponentes = this.gerarSubComponents(this.componentData);
+            const subComponentes = this.gerarSubComponentes(this.componentData);
             let componentRef = null;
             componentRef = this.viewContainer.createComponent(componentFactory, 0, this.injector, subComponentes.subComponentesNativeElementsGerados);
             for (const dataKey in this.componentData.data) {
@@ -611,7 +606,14 @@ class ComponentLayoutComponent {
     }
 }
 ComponentLayoutComponent.ɵfac = function ComponentLayoutComponent_Factory(t) { return new (t || ComponentLayoutComponent)(_angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdirectiveInject"](_angular_core__WEBPACK_IMPORTED_MODULE_0__["ComponentFactoryResolver"]), _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdirectiveInject"](_angular_core__WEBPACK_IMPORTED_MODULE_0__["Injector"]), _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdirectiveInject"](_angular_core__WEBPACK_IMPORTED_MODULE_0__["ApplicationRef"]), _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdirectiveInject"](_angular_core__WEBPACK_IMPORTED_MODULE_0__["ViewContainerRef"])); };
-ComponentLayoutComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineComponent"]({ type: ComponentLayoutComponent, selectors: [["app-component-layout"]], inputs: { componentData: "componentData" }, decls: 0, vars: 0, template: function ComponentLayoutComponent_Template(rf, ctx) { }, styles: ["\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IiIsImZpbGUiOiJzcmMvYXBwL2NvbXBvbmVudC1sYXlvdXQvY29tcG9uZW50LWxheW91dC5jb21wb25lbnQuY3NzIn0= */"] });
+ComponentLayoutComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineComponent"]({ type: ComponentLayoutComponent, selectors: [["app-component-layout"]], viewQuery: function ComponentLayoutComponent_Query(rf, ctx) { if (rf & 1) {
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵviewQuery"](_c0, true, _angular_core__WEBPACK_IMPORTED_MODULE_0__["ViewContainerRef"]);
+    } if (rf & 2) {
+        var _t;
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵqueryRefresh"](_t = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵloadQuery"]()) && (ctx.tempViewContainerRef = _t.first);
+    } }, inputs: { componentData: "componentData" }, decls: 2, vars: 0, consts: [[2, "opacity", "0", "top", "0", "left", "0"], ["tempViewContainer", ""]], template: function ComponentLayoutComponent_Template(rf, ctx) { if (rf & 1) {
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelement"](0, "div", 0, 1);
+    } }, styles: ["\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IiIsImZpbGUiOiJzcmMvYXBwL2NvbXBvbmVudC1sYXlvdXQvY29tcG9uZW50LWxheW91dC5jb21wb25lbnQuY3NzIn0= */"] });
 /*@__PURE__*/ (function () { _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵsetClassMetadata"](ComponentLayoutComponent, [{
         type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"],
         args: [{
@@ -621,6 +623,9 @@ ComponentLayoutComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵ�
             }]
     }], function () { return [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["ComponentFactoryResolver"] }, { type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Injector"] }, { type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["ApplicationRef"] }, { type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["ViewContainerRef"] }]; }, { componentData: [{
             type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"]
+        }], tempViewContainerRef: [{
+            type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["ViewChild"],
+            args: ["tempViewContainer", { read: _angular_core__WEBPACK_IMPORTED_MODULE_0__["ViewContainerRef"] }]
         }] }); })();
 
 
