@@ -44,11 +44,43 @@ export class ComponentLayoutComponent implements OnInit {
         subcomp.instance[dataKey] = element.data[dataKey];
       }
       subcomp.hostView.detectChanges();
+
+      this.configuracoesAdicionais(element, segundoNivel, subcomp);
+
       subComponentesNativeElementsGerados.push(subcomp.location.nativeElement);
       subComponentesGerados.push(subcomp.instance);
     }
     return { subComponentesGerados: [subComponentesGerados], subComponentesNativeElementsGerados: [subComponentesNativeElementsGerados], };
     //return [...subComponentesGerados];
+  }
+
+  configuracoesAdicionais(comp: ComponentLayoutModel, subComponentes: { subComponentesGerados: any[][] }, componentRef: ComponentRef<any>) {
+    //PoTabsComponent não esta gerando os tabs header
+    if (comp.component == PoTabsComponent) {
+
+      setTimeout(() => {
+        const t = new QueryList<PoTabComponent>();
+        t.reset([...subComponentes.subComponentesGerados]);
+        componentRef.instance.tabs = t;
+        componentRef.hostView.detectChanges();
+      }, 1000);
+    }
+
+    if (comp.component == PoStepperComponent) {
+      setTimeout(() => {
+        const t = new QueryList<PoStepComponent>();
+        t.reset([...subComponentes.subComponentesGerados]);
+        componentRef.instance.poSteps = t;
+        componentRef.hostView.detectChanges();
+        componentRef.instance.ngAfterContentInit();
+      }, 1000);
+    }
+
+    if (comp.component == PoChartComponent) {
+      setTimeout(() => {
+        componentRef.instance.rebuildComponent();
+      }, 1000);
+    }
   }
 
   ngOnInit(): void {
@@ -68,32 +100,8 @@ export class ComponentLayoutComponent implements OnInit {
         componentRef.instance[dataKey] = this.componentData.data[dataKey];
       }
 
-      //PoTabsComponent não esta gerando os tabs header
-      if (this.componentData.component == PoTabsComponent) {
 
-        setTimeout(() => {
-          const t = new QueryList<PoTabComponent>();
-          t.reset([...subComponentes.subComponentesGerados]);
-          componentRef.instance.tabs = t;
-          componentRef.hostView.detectChanges();
-        }, 100);
-      }
-
-      if (this.componentData.component == PoStepperComponent) {
-        setTimeout(() => {
-          const t = new QueryList<PoStepComponent>();
-          t.reset([...subComponentes.subComponentesGerados]);
-          componentRef.instance.poSteps = t;
-          componentRef.hostView.detectChanges();
-          componentRef.instance.ngAfterContentInit();
-        }, 500);
-      }
-
-      if (this.componentData.component == PoChartComponent) {
-        setTimeout(() => {
-          componentRef.instance.rebuildComponent();
-        }, 500);
-      }
+      this.configuracoesAdicionais(this.componentData, subComponentes, componentRef)
 
     }, 500);
   }
