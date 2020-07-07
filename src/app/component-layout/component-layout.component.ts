@@ -15,20 +15,11 @@ export class ComponentLayoutComponent implements OnInit {
   constructor(private resolver: ComponentFactoryResolver,
     private injector: Injector,
     private appRef: ApplicationRef,
-    private viewContainer: ViewContainerRef) {
-    //component = PoPageDefaultComponent;
-  }
+    private viewContainer: ViewContainerRef) { }
 
+  @ViewChild("tempViewContainer", { read: ViewContainerRef }) tempViewContainerRef: ViewContainerRef;
 
-  decoratorOfType<T>(decoratedType: Type<any>, decoratorType: Type<T>): T {
-    // get all decorators off of the provided type
-    return Reflect.getOwnPropertyDescriptor(decoratedType, '__annotations__').value.find((annotation: any) =>
-      // get the decorator that matches the requested type
-      annotation instanceof decoratorType
-    );
-  }
-
-  gerarSubComponents(componente: ComponentLayoutModel) {
+  gerarSubComponentes(componente: ComponentLayoutModel) {
     const subComponentesGerados = [];
     const subComponentesNativeElementsGerados = [];
 
@@ -38,8 +29,9 @@ export class ComponentLayoutComponent implements OnInit {
         element.component
       );
 
-      const segundoNivel = this.gerarSubComponents(element);
-      const subcomp = subComponentFactory.create(this.injector, segundoNivel.subComponentesNativeElementsGerados);
+      const segundoNivel = this.gerarSubComponentes(element);
+      //const subcomp =   subComponentFactory.create(this.injector, segundoNivel.subComponentesNativeElementsGerados);
+      const subcomp = this.tempViewContainerRef.createComponent(subComponentFactory, null, this.injector, segundoNivel.subComponentesNativeElementsGerados);
       for (const dataKey in element.data) {
         subcomp.instance[dataKey] = element.data[dataKey];
       }
@@ -63,7 +55,7 @@ export class ComponentLayoutComponent implements OnInit {
         t.reset([...subComponentes.subComponentesGerados]);
         componentRef.instance.tabs = t;
         componentRef.hostView.detectChanges();
-      }, 1000);
+      }, 500);
     }
 
     if (comp.component == PoStepperComponent) {
@@ -73,14 +65,14 @@ export class ComponentLayoutComponent implements OnInit {
         componentRef.instance.poSteps = t;
         componentRef.hostView.detectChanges();
         componentRef.instance.ngAfterContentInit();
-      }, 1000);
+      }, 500);
     }
 
-    if (comp.component == PoChartComponent) {
-      setTimeout(() => {
-        componentRef.instance.rebuildComponent();
-      }, 1000);
-    }
+    // if (comp.component == PoChartComponent) {
+    //   // setTimeout(() => {
+    //   //   componentRef.instance.rebuildComponent();
+    //   // }, 1000);
+    // }
   }
 
   ngOnInit(): void {
@@ -91,7 +83,7 @@ export class ComponentLayoutComponent implements OnInit {
         this.componentData.component
       );
 
-      const subComponentes = this.gerarSubComponents(this.componentData);
+      const subComponentes = this.gerarSubComponentes(this.componentData);
 
       let componentRef: ComponentRef<any> = null;
       componentRef = this.viewContainer.createComponent(componentFactory, 0, this.injector, subComponentes.subComponentesNativeElementsGerados);
@@ -99,7 +91,6 @@ export class ComponentLayoutComponent implements OnInit {
       for (const dataKey in this.componentData.data) {
         componentRef.instance[dataKey] = this.componentData.data[dataKey];
       }
-
 
       this.configuracoesAdicionais(this.componentData, subComponentes, componentRef)
 
