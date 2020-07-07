@@ -744,7 +744,13 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
               };
 
               try {
-                propriedade.value = value.data[_key] ? JSON.stringify(value.data[_key]) : '';
+                if (value.data[_key]) {
+                  if (value.data[_key] instanceof Object) {
+                    propriedade.value = JSON.stringify(value.data[_key]);
+                  } else {
+                    propriedade.value = value.data[_key] ? value.data[_key] : '';
+                  }
+                }
               } catch (error) {
                 propriedade.value = value.data[_key] ? value.data[_key] : '';
               }
@@ -777,7 +783,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       selectors: [["app-root"]],
       decls: 3,
       vars: 3,
-      consts: [["p-title", "Po Layout Builder", 3, "p-actions"], ["p-title", "Configura\xE7\xE3o", "p-primary-label", "Confirmar", "p-secondary-label", "Cancelar", 3, "p-primary-action", "p-secondary-action", 4, "ngIf"], [3, "componentData", 4, "ngFor", "ngForOf"], ["p-title", "Configura\xE7\xE3o", "p-primary-label", "Confirmar", "p-secondary-label", "Cancelar", 3, "p-primary-action", "p-secondary-action"], [1, "po-row", "po-mb-1"], ["p-type", "primary", "p-label", "Novo Componente", 3, "p-click"], ["p-type", "danger", "p-label", "Limpar", 1, "po-ml-1", 3, "p-click"], [1, "po-row"], ["p-height", "700", "p-title", "Componentes", 1, "po-lg-6", "po-mb-1"], [3, "p-selectable", "p-items", "p-selected"], ["class", "po-lg-6 po-mb-1", "p-height", "700", "p-primary-label", "Confirmar", "p-secondary-label", "Add Filhos", 3, "p-title", "p-primary-action", "p-secondary-action", 4, "ngIf"], ["p-height", "700", "p-primary-label", "Confirmar", "p-secondary-label", "Add Filhos", 1, "po-lg-6", "po-mb-1", 3, "p-title", "p-primary-action", "p-secondary-action"], ["name", "ComponentCombo", "p-label", "Componente:", "p-required", "", 1, "po-md-12", 3, "ngModel", "p-options", "p-filter-mode", "ngModelChange", "p-change"], ["class", "po-row", 4, "ngIf"], ["p-property-title", "name", 1, "po-md-12", 3, "p-items"], ["p-list-view-content-template", ""], ["p-label", "Exibir editor avan\xE7ado?", "p-label-off", " ", "p-label-on", " ", 3, "ngModel", "ngModelChange"], ["name", "input", 1, "po-md-12", 3, "ngModel", "ngModelChange"], ["p-height", "300", "p-language", "json", 1, "po-md-12", 3, "ngModel", "ngModelChange"], [3, "componentData"]],
+      consts: [["p-title", "PO Layout Builder", 3, "p-actions"], ["p-title", "Configura\xE7\xE3o", "p-primary-label", "Confirmar", "p-secondary-label", "Cancelar", 3, "p-primary-action", "p-secondary-action", 4, "ngIf"], [3, "componentData", 4, "ngFor", "ngForOf"], ["p-title", "Configura\xE7\xE3o", "p-primary-label", "Confirmar", "p-secondary-label", "Cancelar", 3, "p-primary-action", "p-secondary-action"], [1, "po-row", "po-mb-1"], ["p-type", "primary", "p-label", "Novo Componente", 3, "p-click"], ["p-type", "danger", "p-label", "Limpar", 1, "po-ml-1", 3, "p-click"], [1, "po-row"], ["p-height", "700", "p-title", "Componentes", 1, "po-lg-6", "po-mb-1"], [3, "p-selectable", "p-items", "p-selected"], ["class", "po-lg-6 po-mb-1", "p-height", "700", "p-primary-label", "Confirmar", "p-secondary-label", "Add Filhos", 3, "p-title", "p-primary-action", "p-secondary-action", 4, "ngIf"], ["p-height", "700", "p-primary-label", "Confirmar", "p-secondary-label", "Add Filhos", 1, "po-lg-6", "po-mb-1", 3, "p-title", "p-primary-action", "p-secondary-action"], ["name", "ComponentCombo", "p-label", "Componente:", "p-required", "", 1, "po-md-12", 3, "ngModel", "p-options", "p-filter-mode", "ngModelChange", "p-change"], ["class", "po-row", 4, "ngIf"], ["p-property-title", "name", 1, "po-md-12", 3, "p-items"], ["p-list-view-content-template", ""], ["p-label", "Exibir editor avan\xE7ado?", "p-label-off", " ", "p-label-on", " ", 3, "ngModel", "ngModelChange"], ["name", "input", 1, "po-md-12", 3, "ngModel", "ngModelChange"], ["p-height", "300", "p-language", "json", 1, "po-md-12", 3, "ngModel", "ngModelChange"], [3, "componentData"]],
       template: function AppComponent_Template(rf, ctx) {
         if (rf & 1) {
           _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](0, "po-page-default", 0);
@@ -921,13 +927,13 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
         return new (t || AppModule)();
       },
       providers: [],
-      imports: [[_angular_platform_browser__WEBPACK_IMPORTED_MODULE_0__["BrowserModule"], _angular_platform_browser_animations__WEBPACK_IMPORTED_MODULE_2__["BrowserAnimationsModule"], _app_routing_module__WEBPACK_IMPORTED_MODULE_3__["AppRoutingModule"], _angular_forms__WEBPACK_IMPORTED_MODULE_7__["FormsModule"], _po_ui_ng_components__WEBPACK_IMPORTED_MODULE_5__["PoModule"], _po_ui_ng_code_editor__WEBPACK_IMPORTED_MODULE_9__["PoCodeEditorModule"]]]
+      imports: [[_angular_platform_browser__WEBPACK_IMPORTED_MODULE_0__["BrowserModule"], _angular_platform_browser_animations__WEBPACK_IMPORTED_MODULE_2__["BrowserAnimationsModule"], _app_routing_module__WEBPACK_IMPORTED_MODULE_3__["AppRoutingModule"], _angular_forms__WEBPACK_IMPORTED_MODULE_7__["FormsModule"], _po_ui_ng_code_editor__WEBPACK_IMPORTED_MODULE_9__["PoCodeEditorModule"], _po_ui_ng_components__WEBPACK_IMPORTED_MODULE_5__["PoModule"]]]
     });
 
     (function () {
       (typeof ngJitMode === "undefined" || ngJitMode) && _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵsetNgModuleScope"](AppModule, {
         declarations: [_app_component__WEBPACK_IMPORTED_MODULE_4__["AppComponent"], _component_layout_component_layout_component__WEBPACK_IMPORTED_MODULE_6__["ComponentLayoutComponent"], _porow_porow_component__WEBPACK_IMPORTED_MODULE_8__["PoRowComponent"]],
-        imports: [_angular_platform_browser__WEBPACK_IMPORTED_MODULE_0__["BrowserModule"], _angular_platform_browser_animations__WEBPACK_IMPORTED_MODULE_2__["BrowserAnimationsModule"], _app_routing_module__WEBPACK_IMPORTED_MODULE_3__["AppRoutingModule"], _angular_forms__WEBPACK_IMPORTED_MODULE_7__["FormsModule"], _po_ui_ng_components__WEBPACK_IMPORTED_MODULE_5__["PoModule"], _po_ui_ng_code_editor__WEBPACK_IMPORTED_MODULE_9__["PoCodeEditorModule"]]
+        imports: [_angular_platform_browser__WEBPACK_IMPORTED_MODULE_0__["BrowserModule"], _angular_platform_browser_animations__WEBPACK_IMPORTED_MODULE_2__["BrowserAnimationsModule"], _app_routing_module__WEBPACK_IMPORTED_MODULE_3__["AppRoutingModule"], _angular_forms__WEBPACK_IMPORTED_MODULE_7__["FormsModule"], _po_ui_ng_code_editor__WEBPACK_IMPORTED_MODULE_9__["PoCodeEditorModule"], _po_ui_ng_components__WEBPACK_IMPORTED_MODULE_5__["PoModule"]]
       });
     })();
     /*@__PURE__*/
@@ -938,7 +944,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
         type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["NgModule"],
         args: [{
           declarations: [_app_component__WEBPACK_IMPORTED_MODULE_4__["AppComponent"], _component_layout_component_layout_component__WEBPACK_IMPORTED_MODULE_6__["ComponentLayoutComponent"], _porow_porow_component__WEBPACK_IMPORTED_MODULE_8__["PoRowComponent"]],
-          imports: [_angular_platform_browser__WEBPACK_IMPORTED_MODULE_0__["BrowserModule"], _angular_platform_browser_animations__WEBPACK_IMPORTED_MODULE_2__["BrowserAnimationsModule"], _app_routing_module__WEBPACK_IMPORTED_MODULE_3__["AppRoutingModule"], _angular_forms__WEBPACK_IMPORTED_MODULE_7__["FormsModule"], _po_ui_ng_components__WEBPACK_IMPORTED_MODULE_5__["PoModule"], _po_ui_ng_code_editor__WEBPACK_IMPORTED_MODULE_9__["PoCodeEditorModule"]],
+          imports: [_angular_platform_browser__WEBPACK_IMPORTED_MODULE_0__["BrowserModule"], _angular_platform_browser_animations__WEBPACK_IMPORTED_MODULE_2__["BrowserAnimationsModule"], _app_routing_module__WEBPACK_IMPORTED_MODULE_3__["AppRoutingModule"], _angular_forms__WEBPACK_IMPORTED_MODULE_7__["FormsModule"], _po_ui_ng_code_editor__WEBPACK_IMPORTED_MODULE_9__["PoCodeEditorModule"], _po_ui_ng_components__WEBPACK_IMPORTED_MODULE_5__["PoModule"]],
           providers: [],
           bootstrap: [_app_component__WEBPACK_IMPORTED_MODULE_4__["AppComponent"]]
         }]
@@ -1017,6 +1023,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
             }
 
             subcomp.hostView.detectChanges();
+            this.configuracoesAdicionais(element, segundoNivel, subcomp);
             subComponentesNativeElementsGerados.push(subcomp.location.nativeElement);
             subComponentesGerados.push(subcomp.instance);
           }
@@ -1025,6 +1032,35 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
             subComponentesGerados: [subComponentesGerados],
             subComponentesNativeElementsGerados: [subComponentesNativeElementsGerados]
           }; //return [...subComponentesGerados];
+        }
+      }, {
+        key: "configuracoesAdicionais",
+        value: function configuracoesAdicionais(comp, subComponentes, componentRef) {
+          //PoTabsComponent não esta gerando os tabs header
+          if (comp.component == _po_ui_ng_components__WEBPACK_IMPORTED_MODULE_1__["PoTabsComponent"]) {
+            setTimeout(function () {
+              var t = new _angular_core__WEBPACK_IMPORTED_MODULE_0__["QueryList"]();
+              t.reset(_toConsumableArray(subComponentes.subComponentesGerados));
+              componentRef.instance.tabs = t;
+              componentRef.hostView.detectChanges();
+            }, 1000);
+          }
+
+          if (comp.component == _po_ui_ng_components__WEBPACK_IMPORTED_MODULE_1__["PoStepperComponent"]) {
+            setTimeout(function () {
+              var t = new _angular_core__WEBPACK_IMPORTED_MODULE_0__["QueryList"]();
+              t.reset(_toConsumableArray(subComponentes.subComponentesGerados));
+              componentRef.instance.poSteps = t;
+              componentRef.hostView.detectChanges();
+              componentRef.instance.ngAfterContentInit();
+            }, 1000);
+          }
+
+          if (comp.component == _po_ui_ng_components__WEBPACK_IMPORTED_MODULE_1__["PoChartComponent"]) {
+            setTimeout(function () {
+              componentRef.instance.rebuildComponent();
+            }, 1000);
+          }
         }
       }, {
         key: "ngOnInit",
@@ -1044,17 +1080,9 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
             for (var dataKey in _this3.componentData.data) {
               componentRef.instance[dataKey] = _this3.componentData.data[dataKey];
-            } //PoTabsComponent não esta gerando os tabs header
-
-
-            if (_this3.componentData.component == _po_ui_ng_components__WEBPACK_IMPORTED_MODULE_1__["PoTabsComponent"]) {
-              setTimeout(function () {
-                var t = new _angular_core__WEBPACK_IMPORTED_MODULE_0__["QueryList"]();
-                t.reset(_toConsumableArray(subComponentes.subComponentesGerados));
-                componentRef.instance.tabs = t;
-                componentRef.hostView.detectChanges();
-              }, 100);
             }
+
+            _this3.configuracoesAdicionais(_this3.componentData, subComponentes, componentRef);
           }, 500);
         }
       }]);
