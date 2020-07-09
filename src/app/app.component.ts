@@ -28,7 +28,7 @@ export class AppComponent {
     private injector: Injector,
     private sanitizer: DomSanitizer) {
     this.listaComponents = this.obterComponentes(PoComponentsModule);
-    this.listaComponents.push(PoRowComponent);
+    //this.listaComponents.push(PoRowComponent); Verificar melhor como fazer
     this.componentsOptions = this.listaComponents.map<PoComboOption>((item) => {
       return { label: item.name, value: item } as unknown as PoComboOption;
     });
@@ -374,6 +374,11 @@ export class AppComponent {
       }
     }
 
+    this.componentProperties.push({
+      name: 'class',
+      value: null
+    });
+
     this.componentProperties = this.componentProperties.sort((a, b) => {
       if (a.name.toUpperCase() < b.name.toUpperCase()) { return -1; }
       if (a.name.toUpperCase() > b.name.toUpperCase()) { return 1; }
@@ -382,6 +387,12 @@ export class AppComponent {
   }
   componentProperties: any[] = [];
 
+
+  windowSize: number = window.innerHeight - 125;
+
+  onResize(evt) {
+    this.windowSize = window.innerHeight - 125;
+  }
 
   //CodeEditor
 

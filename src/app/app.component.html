@@ -3,7 +3,8 @@
 <po-page-default p-title="PO Layout Builder" [p-actions]="actions">
 
   <po-widget *ngIf="exibirConfig" p-title="Configuração" (p-primary-action)="confirmarAlteracoes()"
-    p-primary-label="Confirmar" (p-secondary-action)="closeModal()" p-secondary-label="Cancelar">
+    p-primary-label="Confirmar" (p-secondary-action)="closeModal()" p-secondary-label="Cancelar" [p-height]="windowSize"
+    (window:resize)="onResize($event)">
 
     <div class="po-row po-mb-1">
       <po-button p-type="primary" p-label="Componente" p-icon='po-icon po-icon-plus-circle'
@@ -17,13 +18,13 @@
       </po-button>
     </div>
     <div class="po-row">
-      <po-widget class="po-lg-6 po-mb-1" p-height="700" p-title="Componentes">
+      <po-widget class="po-lg-6 po-mb-1" [p-height]="windowSize - 190" p-title="Componentes">
 
         <po-tree-view [p-selectable]='true' [p-items]="treeViewData" (p-selected)='treeViewItemSelecionado($event)'>
         </po-tree-view>
       </po-widget>
 
-      <po-widget class="po-lg-6 po-mb-1" p-height="700" *ngIf="componentEdicao != null"
+      <po-widget class="po-lg-6 po-mb-1" [p-height]="windowSize - 190" *ngIf="componentEdicao != null"
         [p-title]="'Edição Componente' + ( (componentEdicao?.component?.name)?componentEdicao?.component?.name :'')"
         (p-primary-action)="confirmarEdicaoComponente()" p-primary-label="Confirmar"
         (p-secondary-action)="adicionarSubComponentes()" p-secondary-label="Add Filhos">

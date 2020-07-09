@@ -50,6 +50,10 @@ export class ComponentLayoutComponent implements OnInit {
 
     comp.componentRef = componentRef;
 
+    if (comp.data.class) {
+      comp.componentRef.location.nativeElement.className = componentRef.location.nativeElement.className + ' ' + comp.data.class;
+    }
+
     if (comp.component == PoTabsComponent) {
 
       setTimeout(() => {
@@ -57,7 +61,7 @@ export class ComponentLayoutComponent implements OnInit {
         t.reset([...subComponentes.subComponentesGerados]);
         componentRef.instance.tabs = t;
         componentRef.hostView.detectChanges();
-      }, 500);
+      }, 250);
     }
 
     if (comp.component == PoStepperComponent) {
@@ -67,14 +71,14 @@ export class ComponentLayoutComponent implements OnInit {
         componentRef.instance.poSteps = t;
         componentRef.hostView.detectChanges();
         componentRef.instance.ngAfterContentInit();
-      }, 500);
+      }, 250);
     }
 
-    // if (comp.component == PoChartComponent) {
-    //   // setTimeout(() => {
-    //   //   componentRef.instance.rebuildComponent();
-    //   // }, 1000);
-    // }
+    if (comp.component == PoChartComponent) {
+      setTimeout(() => {
+        componentRef.instance.rebuildComponent();
+      }, 250);
+    }
   }
 
   ngOnInit(): void {
@@ -96,6 +100,6 @@ export class ComponentLayoutComponent implements OnInit {
 
       this.configuracoesAdicionais(this.componentData, subComponentes, componentRef)
 
-    }, 500);
+    }, 100);
   }
 }
