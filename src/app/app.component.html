@@ -1,6 +1,6 @@
 <a #componentDownloader [href]="fileUrl" style="display: none;" download="componente.txt"></a>
 
-<po-page-default p-title="PO Layout Builder" [p-actions]="actions">
+<po-page-default p-title="PO Layout Builder - Alpha Version" [p-actions]="actions">
 
   <po-widget *ngIf="exibirConfig" p-title="Configuração" (p-primary-action)="confirmarAlteracoes()"
     p-primary-label="Confirmar" (p-secondary-action)="closeModal()" p-secondary-label="Cancelar" [p-height]="windowSize"
@@ -27,8 +27,7 @@
 
       <po-widget class="po-lg-6 po-mb-1" [p-height]="windowSize - 190" *ngIf="componentEdicao != null"
         [p-title]="'Edição Componente' + ( (componentEdicao?.component?.name)?componentEdicao?.component?.name :'')"
-        (p-primary-action)="confirmarEdicaoComponente()" p-primary-label="Confirmar"
-        (p-secondary-action)="adicionarSubComponentes()" p-secondary-label="Adicionar SubComponente">
+        (p-primary-action)="adicionarSubComponentes()" p-primary-label="Adicionar Subcomponente">
 
         <div class="po-row">
           <po-combo class="po-md-12" name="ComponentCombo" p-label="Componente:" [(ngModel)]="componentEdicao.component"
@@ -45,13 +44,15 @@
                 </po-switch>
               </div>
               <div class="po-row" *ngIf="item.showEditor == undefined || item.showEditor == false">
-                <po-input name="input" p-clean='true' p-no-autocomplete='true' class="po-md-12"
-                  [(ngModel)]="item.value"></po-input>
+                <po-input name="input" p-clean='true' p-no-autocomplete='true' class="po-md-12" [(ngModel)]="item.value"
+                  (p-change-model)="confirmarEdicaoComponente(false)"></po-input>
 
               </div>
               <div class="po-row" *ngIf="item.showEditor == true">
                 <po-code-editor class="po-md-12" [(ngModel)]="item.value" p-height="300" p-language="json">
                 </po-code-editor>
+                <po-button p-type="primary" p-label="Salvar" class='po-md-12'
+                  (p-click)="item.showEditor = false;confirmarEdicaoComponente(false);"></po-button>
               </div>
             </ng-template>
           </po-list-view>

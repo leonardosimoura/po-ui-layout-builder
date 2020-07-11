@@ -19,9 +19,6 @@ export class AppComponent {
 
   listaComponents: Type<any>[] = [];
 
-
-
-
   constructor(
     private poNotification: PoNotificationService,
     private resolver: ComponentFactoryResolver,
@@ -244,6 +241,7 @@ export class AppComponent {
   openConfig() {
     this.exibirConfig = true;
     this.componentesEdicao = [...this.components];
+    this.atualizarTreeView();
   }
 
   exibirConfig = false;
@@ -286,7 +284,7 @@ export class AppComponent {
   }
 
 
-  confirmarEdicaoComponente() {
+  confirmarEdicaoComponente(finalizarEdicao: boolean) {
 
     this.componentEdicao.data = {};
 
@@ -305,7 +303,10 @@ export class AppComponent {
     treeViewItem.label = (this.componentEdicao.component != null) ? this.componentEdicao.component.name : 'Novo Componente';
 
     this.treeViewData = [...this.treeViewData];
-    this.componentEdicao = null;
+    if (finalizarEdicao == true) {
+      this.componentEdicao = null;
+    }
+
   }
 
 
@@ -318,6 +319,7 @@ export class AppComponent {
         subComponent: [],
         componentRef: null
       });
+      this.confirmarEdicaoComponente(false);
       this.atualizarTreeView();
     }
   }
