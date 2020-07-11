@@ -20,14 +20,15 @@
     <div class="po-row">
       <po-widget class="po-lg-6 po-mb-1" [p-height]="windowSize - 190" p-title="Componentes">
 
-        <po-tree-view [p-selectable]='true' [p-items]="treeViewData" (p-selected)='treeViewItemSelecionado($event)'>
+        <po-tree-view [p-selectable]='true' [p-items]="treeViewData" (p-unselected)='treeViewItemSelecionado($event)'
+          (p-selected)='treeViewItemSelecionado($event)'>
         </po-tree-view>
       </po-widget>
 
       <po-widget class="po-lg-6 po-mb-1" [p-height]="windowSize - 190" *ngIf="componentEdicao != null"
         [p-title]="'Edição Componente' + ( (componentEdicao?.component?.name)?componentEdicao?.component?.name :'')"
         (p-primary-action)="confirmarEdicaoComponente()" p-primary-label="Confirmar"
-        (p-secondary-action)="adicionarSubComponentes()" p-secondary-label="Add Filhos">
+        (p-secondary-action)="adicionarSubComponentes()" p-secondary-label="Adicionar SubComponente">
 
         <div class="po-row">
           <po-combo class="po-md-12" name="ComponentCombo" p-label="Componente:" [(ngModel)]="componentEdicao.component"

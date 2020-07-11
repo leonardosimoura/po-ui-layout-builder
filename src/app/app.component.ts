@@ -332,19 +332,48 @@ export class AppComponent {
       return;
     }
 
-    const componentRef = this.resolver
-      .resolveComponentFactory(this.componentEdicao.component)
-      .create(this.injector);
-
-    let descriptor = { ...Object.getOwnPropertyDescriptors(componentRef.instance) };
-    descriptor = { ...descriptor, ...Object.getOwnPropertyDescriptors(componentRef.instance.__proto__) };
-    descriptor = { ...descriptor, ...Object.getOwnPropertyDescriptors(componentRef.instance.__proto__.__proto__) };
+    // const componentRef = this.resolver
+    //   .resolveComponentFactory(this.componentEdicao.component)
+    //   .create(this.injector);
 
 
-    for (const key in componentRef.componentType["ɵcmp"].declaredInputs) {
-      const element = componentRef.componentType["ɵcmp"].declaredInputs[key];
-      descriptor[element] = null;
+    let descriptor = {};
+
+    // let descriptor = { ...Object.getOwnPropertyDescriptors(componentRef.instance) };
+    // descriptor = { ...descriptor, ...Object.getOwnPropertyDescriptors(componentRef.instance.__proto__) };
+    // descriptor = { ...descriptor, ...Object.getOwnPropertyDescriptors(componentRef.instance.__proto__.__proto__) };
+
+    // let tempInstance: any = componentRef.instance;
+
+    // while (tempInstance) {
+    //   descriptor = { ...descriptor, ...Object.getOwnPropertyDescriptors(componentRef.instance) }
+    //   tempInstance = tempInstance.__proto__;
+    // }
+
+
+    for (const key in this.componentEdicao.component["ɵcmp"].declaredInputs) {
+      const element = this.componentEdicao.component["ɵcmp"].declaredInputs[key];
+      let elementkey = (element.startsWith('set') ? element.substr(3) : element);
+
+      elementkey = elementkey.substr(0, 1).toLowerCase() + elementkey.substr(1);
+
+      descriptor[elementkey] = null;
     }
+
+    if (this.componentEdicao.component['__proto__']
+      && this.componentEdicao.component['__proto__'].ɵdir
+      && this.componentEdicao.component['__proto__'].ɵdir.outputs) {
+      for (const key in this.componentEdicao.component['__proto__'].ɵdir.outputs) {
+        const element = this.componentEdicao.component['__proto__'].ɵdir.outputs[key];
+        let elementkey = (element.startsWith('set') ? element.substr(3) : element);
+
+        elementkey = 'z OutPut - ' + elementkey.substr(0, 1).toLowerCase() + elementkey.substr(1);
+
+        //Descomentar para usar os outputs
+        //descriptor[elementkey] = null;
+      }
+    }
+
 
     for (const key in descriptor) {
       const element = descriptor[key];

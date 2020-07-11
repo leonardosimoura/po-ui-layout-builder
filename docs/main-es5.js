@@ -432,12 +432,18 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](6, "po-tree-view", 11);
 
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵlistener"]("p-selected", function AppComponent_po_widget_3_Template_po_tree_view_p_selected_6_listener($event) {
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵlistener"]("p-unselected", function AppComponent_po_widget_3_Template_po_tree_view_p_unselected_6_listener($event) {
           _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵrestoreView"](_r25);
 
           var ctx_r30 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵnextContext"]();
 
           return ctx_r30.treeViewItemSelecionado($event);
+        })("p-selected", function AppComponent_po_widget_3_Template_po_tree_view_p_selected_6_listener($event) {
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵrestoreView"](_r25);
+
+          var ctx_r31 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵnextContext"]();
+
+          return ctx_r31.treeViewItemSelecionado($event);
         });
 
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
@@ -476,9 +482,9 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       }
 
       if (rf & 2) {
-        var item_r31 = ctx.$implicit;
+        var item_r32 = ctx.$implicit;
 
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("componentData", item_r31);
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("componentData", item_r32);
       }
     }
 
@@ -802,37 +808,57 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
           if (value.component == null || value.component == undefined) {
             return;
+          } // const componentRef = this.resolver
+          //   .resolveComponentFactory(this.componentEdicao.component)
+          //   .create(this.injector);
+
+
+          var descriptor = {}; // let descriptor = { ...Object.getOwnPropertyDescriptors(componentRef.instance) };
+          // descriptor = { ...descriptor, ...Object.getOwnPropertyDescriptors(componentRef.instance.__proto__) };
+          // descriptor = { ...descriptor, ...Object.getOwnPropertyDescriptors(componentRef.instance.__proto__.__proto__) };
+          // let tempInstance: any = componentRef.instance;
+          // while (tempInstance) {
+          //   descriptor = { ...descriptor, ...Object.getOwnPropertyDescriptors(componentRef.instance) }
+          //   tempInstance = tempInstance.__proto__;
+          // }
+
+          for (var key in this.componentEdicao.component["ɵcmp"].declaredInputs) {
+            var element = this.componentEdicao.component["ɵcmp"].declaredInputs[key];
+            var elementkey = element.startsWith('set') ? element.substr(3) : element;
+            elementkey = elementkey.substr(0, 1).toLowerCase() + elementkey.substr(1);
+            descriptor[elementkey] = null;
           }
 
-          var componentRef = this.resolver.resolveComponentFactory(this.componentEdicao.component).create(this.injector);
-          var descriptor = Object.assign({}, Object.getOwnPropertyDescriptors(componentRef.instance));
-          descriptor = Object.assign(Object.assign({}, descriptor), Object.getOwnPropertyDescriptors(componentRef.instance.__proto__));
-          descriptor = Object.assign(Object.assign({}, descriptor), Object.getOwnPropertyDescriptors(componentRef.instance.__proto__.__proto__));
+          if (this.componentEdicao.component['__proto__'] && this.componentEdicao.component['__proto__'].ɵdir && this.componentEdicao.component['__proto__'].ɵdir.outputs) {
+            for (var _key in this.componentEdicao.component['__proto__'].ɵdir.outputs) {
+              var _element2 = this.componentEdicao.component['__proto__'].ɵdir.outputs[_key];
 
-          for (var key in componentRef.componentType["ɵcmp"].declaredInputs) {
-            var element = componentRef.componentType["ɵcmp"].declaredInputs[key];
-            descriptor[element] = null;
+              var _elementkey = _element2.startsWith('set') ? _element2.substr(3) : _element2;
+
+              _elementkey = 'z OutPut - ' + _elementkey.substr(0, 1).toLowerCase() + _elementkey.substr(1); //Descomentar para usar os outputs
+              //descriptor[elementkey] = null;
+            }
           }
 
-          for (var _key in descriptor) {
-            var _element2 = descriptor[_key];
+          for (var _key2 in descriptor) {
+            var _element3 = descriptor[_key2];
 
-            if (_element2 == null || _element2.set) {
+            if (_element3 == null || _element3.set) {
               var propriedade = {
-                name: _key,
+                name: _key2,
                 value: ''
               };
 
               try {
-                if (value.data[_key]) {
-                  if (value.data[_key] instanceof Object) {
-                    propriedade.value = JSON.stringify(value.data[_key]);
+                if (value.data[_key2]) {
+                  if (value.data[_key2] instanceof Object) {
+                    propriedade.value = JSON.stringify(value.data[_key2]);
                   } else {
-                    propriedade.value = value.data[_key] ? value.data[_key] : '';
+                    propriedade.value = value.data[_key2] ? value.data[_key2] : '';
                   }
                 }
               } catch (error) {
-                propriedade.value = value.data[_key] ? value.data[_key] : '';
+                propriedade.value = value.data[_key2] ? value.data[_key2] : '';
               }
 
               this.componentProperties.push(propriedade);
@@ -895,7 +921,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       },
       decls: 5,
       vars: 4,
-      consts: [["download", "componente.txt", 2, "display", "none", 3, "href"], ["componentDownloader", ""], ["p-title", "PO Layout Builder", 3, "p-actions"], ["p-title", "Configura\xE7\xE3o", "p-primary-label", "Confirmar", "p-secondary-label", "Cancelar", 3, "p-height", "p-primary-action", "p-secondary-action", "resize", 4, "ngIf"], [3, "componentData", 4, "ngFor", "ngForOf"], ["p-title", "Configura\xE7\xE3o", "p-primary-label", "Confirmar", "p-secondary-label", "Cancelar", 3, "p-height", "p-primary-action", "p-secondary-action", "resize"], [1, "po-row", "po-mb-1"], ["p-type", "primary", "p-label", "Componente", "p-icon", "po-icon po-icon-plus-circle", 3, "p-click"], ["p-type", "danger", "p-icon", "po-icon po-icon-delete", "p-label", "Limpar", 1, "po-ml-1", 3, "p-click"], [1, "po-row"], ["p-title", "Componentes", 1, "po-lg-6", "po-mb-1", 3, "p-height"], [3, "p-selectable", "p-items", "p-selected"], ["class", "po-lg-6 po-mb-1", "p-primary-label", "Confirmar", "p-secondary-label", "Add Filhos", 3, "p-height", "p-title", "p-primary-action", "p-secondary-action", 4, "ngIf"], ["p-primary-label", "Confirmar", "p-secondary-label", "Add Filhos", 1, "po-lg-6", "po-mb-1", 3, "p-height", "p-title", "p-primary-action", "p-secondary-action"], ["name", "ComponentCombo", "p-label", "Componente:", "p-required", "", 1, "po-md-12", 3, "ngModel", "p-options", "p-filter-mode", "ngModelChange", "p-change"], ["class", "po-row", 4, "ngIf"], ["p-property-title", "name", 1, "po-md-12", 3, "p-items"], ["p-list-view-content-template", ""], ["p-label", "Exibir editor avan\xE7ado?", "p-label-off", " ", "p-label-on", " ", 3, "ngModel", "ngModelChange"], ["name", "input", "p-clean", "true", "p-no-autocomplete", "true", 1, "po-md-12", 3, "ngModel", "ngModelChange"], ["p-height", "300", "p-language", "json", 1, "po-md-12", 3, "ngModel", "ngModelChange"], [3, "componentData"]],
+      consts: [["download", "componente.txt", 2, "display", "none", 3, "href"], ["componentDownloader", ""], ["p-title", "PO Layout Builder", 3, "p-actions"], ["p-title", "Configura\xE7\xE3o", "p-primary-label", "Confirmar", "p-secondary-label", "Cancelar", 3, "p-height", "p-primary-action", "p-secondary-action", "resize", 4, "ngIf"], [3, "componentData", 4, "ngFor", "ngForOf"], ["p-title", "Configura\xE7\xE3o", "p-primary-label", "Confirmar", "p-secondary-label", "Cancelar", 3, "p-height", "p-primary-action", "p-secondary-action", "resize"], [1, "po-row", "po-mb-1"], ["p-type", "primary", "p-label", "Componente", "p-icon", "po-icon po-icon-plus-circle", 3, "p-click"], ["p-type", "danger", "p-icon", "po-icon po-icon-delete", "p-label", "Limpar", 1, "po-ml-1", 3, "p-click"], [1, "po-row"], ["p-title", "Componentes", 1, "po-lg-6", "po-mb-1", 3, "p-height"], [3, "p-selectable", "p-items", "p-unselected", "p-selected"], ["class", "po-lg-6 po-mb-1", "p-primary-label", "Confirmar", "p-secondary-label", "Adicionar SubComponente", 3, "p-height", "p-title", "p-primary-action", "p-secondary-action", 4, "ngIf"], ["p-primary-label", "Confirmar", "p-secondary-label", "Adicionar SubComponente", 1, "po-lg-6", "po-mb-1", 3, "p-height", "p-title", "p-primary-action", "p-secondary-action"], ["name", "ComponentCombo", "p-label", "Componente:", "p-required", "", 1, "po-md-12", 3, "ngModel", "p-options", "p-filter-mode", "ngModelChange", "p-change"], ["class", "po-row", 4, "ngIf"], ["p-property-title", "name", 1, "po-md-12", 3, "p-items"], ["p-list-view-content-template", ""], ["p-label", "Exibir editor avan\xE7ado?", "p-label-off", " ", "p-label-on", " ", 3, "ngModel", "ngModelChange"], ["name", "input", "p-clean", "true", "p-no-autocomplete", "true", 1, "po-md-12", 3, "ngModel", "ngModelChange"], ["p-height", "300", "p-language", "json", 1, "po-md-12", 3, "ngModel", "ngModelChange"], [3, "componentData"]],
       template: function AppComponent_Template(rf, ctx) {
         if (rf & 1) {
           _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelement"](0, "a", 0, 1);
