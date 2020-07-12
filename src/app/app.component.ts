@@ -5,6 +5,7 @@ import { NgForm } from '@angular/forms';
 import { v4 as uuidv4 } from 'uuid';
 import { PoRowComponent } from './porow/porow.component';
 import { DomSanitizer } from '@angular/platform-browser';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-root',
@@ -13,9 +14,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 })
 export class AppComponent {
 
-  components: ComponentLayoutModel[] = [
-
-  ]
+  components: ComponentLayoutModel[] = environment.componentesIniciais;
 
   listaComponents: Type<any>[] = [];
 
@@ -56,8 +55,7 @@ export class AppComponent {
       action: this.openConfig.bind(this)
     },
     {
-      label: "Exportar HTML",
-      icon: 'po-icon po-icon-download',
+      label: "Exportar HTML*",
       action: this.exportarComponentes.bind(this)
     }
   ]
@@ -218,19 +216,19 @@ export class AppComponent {
 
   treeViewItemSelecionado(treeViewItem: PoTreeViewItem) {
 
-    const unmark = (dismarkItem: PoTreeViewItem) => {
-      dismarkItem.selected = false;
-
-      if (dismarkItem.subItems != undefined || dismarkItem.subItems != null) {
-        for (let i = 0; i < dismarkItem.subItems.length; i++) {
-          const element = dismarkItem.subItems[i];
-          unmark(element);
-        }
-      }
-    }
-    unmark(treeViewItem);
+    // const unmark = (dismarkItem: PoTreeViewItem) => {
+    //   dismarkItem.selected = true;
+    //   dismarkItem.expanded = true;
+    //   if (dismarkItem.subItems != undefined || dismarkItem.subItems != null) {
+    //     for (let i = 0; i < dismarkItem.subItems.length; i++) {
+    //       const element = dismarkItem.subItems[i];
+    //       unmark(element);
+    //     }
+    //   }
+    // }
+    // unmark(treeViewItem);
     const search = this.buscarComponentPorId(treeViewItem.value as string);
-    this.treeViewData = [...this.treeViewData];
+    //this.treeViewData = [...this.treeViewData];
     this.componentEdicao = search;
   }
 
@@ -260,6 +258,7 @@ export class AppComponent {
 
   changeComponentCombo() {
     this.atualizarProriedadesComponente(this.componentEdicao);
+    this.confirmarEdicaoComponente(false);
   }
 
 
@@ -298,15 +297,14 @@ export class AppComponent {
         }
       }
     }
-
     const treeViewItem = this.obterItemTreeListPorId(this.componentEdicao.id);
     treeViewItem.label = (this.componentEdicao.component != null) ? this.componentEdicao.component.name : 'Novo Componente';
-
+    treeViewItem.expanded = true;
     this.treeViewData = [...this.treeViewData];
     if (finalizarEdicao == true) {
+
       this.componentEdicao = null;
     }
-
   }
 
 
