@@ -1,6 +1,8 @@
-<a #componentDownloader [href]="fileUrl" style="display: none;" download="componente.txt"></a>
+<a #componentDownloader [href]="fileUrl" style="display: none;" [download]="nomeFileDownload"></a>
 
 <po-page-default p-title="PO Layout Builder - Alpha" [p-actions]="actions">
+
+  <input type="file" #jsonFile accept=".json" (change)='readFiles($event)' style="display: none;">
 
   <po-widget *ngIf="exibirConfig" p-title="Configuração" (p-primary-action)="confirmarAlteracoes()"
     p-primary-label="Confirmar" (p-secondary-action)="closeModal()" p-secondary-label="Cancelar" [p-height]="windowSize"
@@ -49,10 +51,11 @@
 
               </div>
               <div class="po-row" *ngIf="item.showEditor == true">
+                <po-button p-type="primary" p-label="Salvar" class='po-md-12 po-mb-1'
+                  (p-click)="item.showEditor = false;confirmarEdicaoComponente(false);"></po-button>
                 <po-code-editor class="po-md-12" [(ngModel)]="item.value" p-height="300" p-language="json">
                 </po-code-editor>
-                <po-button p-type="primary" p-label="Salvar" class='po-md-12'
-                  (p-click)="item.showEditor = false;confirmarEdicaoComponente(false);"></po-button>
+
               </div>
             </ng-template>
           </po-list-view>

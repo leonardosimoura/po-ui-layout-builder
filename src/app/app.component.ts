@@ -1,4 +1,4 @@
-import { Component, Type, ViewChild, ComponentFactoryResolver, Injector, NgModule, NgModuleRef, ElementRef } from '@angular/core';
+import { Component, Type, ViewChild, ComponentFactoryResolver, Injector, NgModule, NgModuleRef, ElementRef, AfterViewInit } from '@angular/core';
 import { ComponentLayoutModel } from 'src/models/component.layout.model';
 import { PoPageDefaultComponent, PoTableComponent, PoComponentsModule, PoModalAction, PoNotificationService, PoModalComponent, PoComboOption, PoPageAction, PoButtonComponent, PoTreeViewItem, PoSelectOption, PoListViewAction, PoModule } from '@po-ui/ng-components';
 import { NgForm } from '@angular/forms';
@@ -6,13 +6,14 @@ import { v4 as uuidv4 } from 'uuid';
 import { PoRowComponent } from './porow/porow.component';
 import { DomSanitizer } from '@angular/platform-browser';
 import { environment } from 'src/environments/environment';
+import { SimplePlaceholderMapper } from '@angular/compiler/src/i18n/serializers/serializer';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent {
+export class AppComponent implements AfterViewInit {
 
   components: ComponentLayoutModel[] = environment.componentesIniciais;
 
@@ -30,6 +31,22 @@ export class AppComponent {
     });
   }
 
+  ngAfterViewInit(): void {
+
+  }
+
+  readFiles(event) {
+    const fileList = event.target.files;
+    console.log(fileList);
+    if (fileList.length == 1) {
+      this.readJsonFile(fileList[0]);
+    }
+
+  }
+
+  @ViewChild("jsonFile") jsonFile: ElementRef;
+
+  nomeFileDownload = 'componente.txt';
 
   private obterComponentes(type: Type<any>) {
 
@@ -57,8 +74,102 @@ export class AppComponent {
     {
       label: "Exportar HTML*",
       action: this.exportarComponentes.bind(this)
+    },
+    {
+      label: "Exportar JSON*",
+      action: this.exportarJson.bind(this)
+    },
+    {
+      label: "Importar JSON*",
+      action: this.importarJson.bind(this)
     }
   ]
+
+  exportarJson() {
+
+
+
+    const mapper = (component: ComponentLayoutModel) => {
+
+      const _temp = {
+        component: component.component.name,
+        data: component.data,
+        id: component.id,
+        subComponent: []
+      }
+
+      if (component.subComponent && component.subComponent.length > 0) {
+        for (let i = 0; i < component.subComponent.length; i++) {
+          const element = mapper(component.subComponent[i]);
+          _temp.subComponent.push(element);
+        }
+      }
+      return _temp;
+    };
+
+    try {
+      const data = JSON.stringify(this.components.map(item => mapper(item)));
+
+      const blob = new Blob([data], { type: 'application/octet-stream' });
+      this.nomeFileDownload = 'componentes.json';
+      this.fileUrl = this.sanitizer.bypassSecurityTrustResourceUrl(window.URL.createObjectURL(blob));
+      setTimeout(() => {
+        this.componentDownloader.nativeElement.click();
+      }, 500);
+    } catch (error) {
+      this.poNotification.error('Ocorreu um erro ao exportar o Json');
+    }
+
+
+  }
+
+  readJsonFile(file) {
+    const reader = new FileReader();
+    reader.addEventListener('load', (event) => {
+      const jsonData = event.target.result as string;
+
+      const mapper = (json) => {
+
+        const subComponent: ComponentLayoutModel[] = [];
+
+        if (json.subComponent) {
+          for (let i = 0; i < json.subComponent.length; i++) {
+            const element = mapper(json.subComponent[i]);
+            subComponent.push(element);
+          }
+        }
+        const item: ComponentLayoutModel = {
+          component: this.listaComponents.find(a => a.name == json.component),
+          id: json.id,
+          componentRef: null,
+          data: json.data,
+          subComponent: subComponent
+        }
+        return item
+      };
+
+
+      try {
+        const _tempListaComponentes: ComponentLayoutModel[] = [];
+        const jsonObject = JSON.parse(jsonData);
+        for (let i = 0; i < jsonObject.length; i++) {
+          _tempListaComponentes.push(mapper(jsonObject[i]));
+        }
+
+        this.components = [..._tempListaComponentes];
+      } catch (error) {
+        this.poNotification.error('Ocorreu um erro ao importar o Json');
+      }
+
+
+    });
+    reader.readAsText(file, 'UTF-8');
+  }
+
+
+  importarJson() {
+    this.jsonFile.nativeElement.click();
+  }
 
   //Edição
 
@@ -75,18 +186,22 @@ export class AppComponent {
   fileUrl;
   @ViewChild("componentDownloader") componentDownloader: ElementRef;
   exportarComponentes() {
-    let finalStr = '';
+    try {
+      let finalStr = '';
 
-    for (let i = 0; i < this.components.length; i++) {
-      const element = this.components[i];
-      finalStr = finalStr + this.gerarArquivoComponente(element);
+      for (let i = 0; i < this.components.length; i++) {
+        const element = this.components[i];
+        finalStr = finalStr + this.gerarArquivoComponente(element);
+      }
+      const blob = new Blob([finalStr], { type: 'application/octet-stream' });
+      this.nomeFileDownload = 'componentes.txt';
+      this.fileUrl = this.sanitizer.bypassSecurityTrustResourceUrl(window.URL.createObjectURL(blob));
+      setTimeout(() => {
+        this.componentDownloader.nativeElement.click();
+      }, 500);
+    } catch (error) {
+      this.poNotification.error('Ocorreu um erro ao exportar o HTML');
     }
-    const blob = new Blob([finalStr], { type: 'application/octet-stream' });
-
-    this.fileUrl = this.sanitizer.bypassSecurityTrustResourceUrl(window.URL.createObjectURL(blob));
-    setTimeout(() => {
-      this.componentDownloader.nativeElement.click();
-    }, 500);
   }
 
   private gerarArquivoComponente(componente: ComponentLayoutModel) {
@@ -405,7 +520,7 @@ export class AppComponent {
 
     this.componentProperties.push({
       name: 'class',
-      value: null
+      value: value.data.class
     });
 
     this.componentProperties = this.componentProperties.sort((a, b) => {
