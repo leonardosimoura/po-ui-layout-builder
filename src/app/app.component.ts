@@ -25,7 +25,7 @@ export class AppComponent implements AfterViewInit {
     private injector: Injector,
     private sanitizer: DomSanitizer) {
     this.listaComponents = this.obterComponentes(PoComponentsModule);
-    //this.listaComponents.push(PoRowComponent); Verificar melhor como fazer
+    this.listaComponents.push(PoRowComponent); //Verificar melhor como fazer
     this.componentsOptions = this.listaComponents.map<PoComboOption>((item) => {
       return { label: item.name, value: item } as unknown as PoComboOption;
     });
