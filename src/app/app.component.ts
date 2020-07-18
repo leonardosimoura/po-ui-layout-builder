@@ -7,6 +7,7 @@ import { PoRowComponent } from './porow/porow.component';
 import { DomSanitizer } from '@angular/platform-browser';
 import { environment } from 'src/environments/environment';
 import { SimplePlaceholderMapper } from '@angular/compiler/src/i18n/serializers/serializer';
+import { PoListViewFakeComponent } from './po-list-view-fake/po-list-view-fake.component';
 
 @Component({
   selector: 'app-root',
@@ -26,6 +27,7 @@ export class AppComponent implements AfterViewInit {
     private sanitizer: DomSanitizer) {
     this.listaComponents = this.obterComponentes(PoComponentsModule);
     this.listaComponents.push(PoRowComponent); //Verificar melhor como fazer
+    //this.listaComponents.push(PoListViewFakeComponent); //Verificar melhor como fazer
     this.componentsOptions = this.listaComponents.map<PoComboOption>((item) => {
       return { label: item.name, value: item } as unknown as PoComboOption;
     });

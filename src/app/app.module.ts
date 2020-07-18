@@ -8,12 +8,14 @@ import { ComponentLayoutComponent } from './component-layout/component-layout.co
 import { FormsModule } from '@angular/forms';
 import { PoRowComponent } from './porow/porow.component';
 import { PoCodeEditorModule } from '@po-ui/ng-code-editor';
+import { PoListViewFakeComponent } from './po-list-view-fake/po-list-view-fake.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     ComponentLayoutComponent,
-    PoRowComponent
+    PoRowComponent,
+    PoListViewFakeComponent
   ],
   imports: [
     BrowserModule,

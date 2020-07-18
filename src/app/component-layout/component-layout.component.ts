@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild, ViewContainerRef, ComponentFactoryResolver, Type, Input, NgModule, Inject, Injector, ApplicationRef, ComponentRef, QueryList } from '@angular/core';
 import { PoPageDefaultComponent, PoTableComponent, PoModule, PoComponentsModule, PoTabsComponent, PoTabComponent, PoChartComponent, PoStepperComponent, PoStepComponent } from '@po-ui/ng-components';
 import { ComponentLayoutModel } from 'src/models/component.layout.model';
+import { PoListViewFakeComponent } from '../po-list-view-fake/po-list-view-fake.component';
 
 @Component({
   selector: 'app-component-layout',
@@ -79,6 +80,7 @@ export class ComponentLayoutComponent implements OnInit {
         componentRef.instance.rebuildComponent();
       }, 250);
     }
+
   }
 
   ngOnInit(): void {
