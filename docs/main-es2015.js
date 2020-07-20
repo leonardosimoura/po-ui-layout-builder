@@ -43,8 +43,7 @@ const routes = [];
 class AppRoutingModule {
 }
 AppRoutingModule.ɵmod = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineNgModule"]({ type: AppRoutingModule });
-AppRoutingModule.ɵinj = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineInjector"]({ factory: function AppRoutingModule_Factory(t) { return new (t || AppRoutingModule)(); }, imports: [[_angular_router__WEBPACK_IMPORTED_MODULE_1__["RouterModule"].forRoot(routes)],
-        _angular_router__WEBPACK_IMPORTED_MODULE_1__["RouterModule"]] });
+AppRoutingModule.ɵinj = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineInjector"]({ factory: function AppRoutingModule_Factory(t) { return new (t || AppRoutingModule)(); }, imports: [[_angular_router__WEBPACK_IMPORTED_MODULE_1__["RouterModule"].forRoot(routes)], _angular_router__WEBPACK_IMPORTED_MODULE_1__["RouterModule"]] });
 (function () { (typeof ngJitMode === "undefined" || ngJitMode) && _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵsetNgModuleScope"](AppRoutingModule, { imports: [_angular_router__WEBPACK_IMPORTED_MODULE_1__["RouterModule"]], exports: [_angular_router__WEBPACK_IMPORTED_MODULE_1__["RouterModule"]] }); })();
 /*@__PURE__*/ (function () { _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵsetClassMetadata"](AppRoutingModule, [{
         type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["NgModule"],
@@ -241,6 +240,7 @@ class AppComponent {
         this.windowSize = window.innerHeight - 125;
         this.listaComponents = this.obterComponentes(_po_ui_ng_components__WEBPACK_IMPORTED_MODULE_1__["PoComponentsModule"]);
         this.listaComponents.push(_porow_porow_component__WEBPACK_IMPORTED_MODULE_3__["PoRowComponent"]); //Verificar melhor como fazer
+        //this.listaComponents.push(PoListViewFakeComponent); //Verificar melhor como fazer
         this.componentsOptions = this.listaComponents.map((item) => {
             return { label: item.name, value: item };
         });
@@ -685,6 +685,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @angular/forms */ "./node_modules/@angular/forms/__ivy_ngcc__/fesm2015/forms.js");
 /* harmony import */ var _porow_porow_component__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./porow/porow.component */ "./src/app/porow/porow.component.ts");
 /* harmony import */ var _po_ui_ng_code_editor__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! @po-ui/ng-code-editor */ "./node_modules/@po-ui/ng-code-editor/__ivy_ngcc__/fesm2015/po-ui-ng-code-editor.js");
+/* harmony import */ var _po_list_view_fake_po_list_view_fake_component__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./po-list-view-fake/po-list-view-fake.component */ "./src/app/po-list-view-fake/po-list-view-fake.component.ts");
+
 
 
 
@@ -709,7 +711,8 @@ AppModule.ɵinj = _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵdefineInjector
         ]] });
 (function () { (typeof ngJitMode === "undefined" || ngJitMode) && _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵsetNgModuleScope"](AppModule, { declarations: [_app_component__WEBPACK_IMPORTED_MODULE_4__["AppComponent"],
         _component_layout_component_layout_component__WEBPACK_IMPORTED_MODULE_6__["ComponentLayoutComponent"],
-        _porow_porow_component__WEBPACK_IMPORTED_MODULE_8__["PoRowComponent"]], imports: [_angular_platform_browser__WEBPACK_IMPORTED_MODULE_0__["BrowserModule"],
+        _porow_porow_component__WEBPACK_IMPORTED_MODULE_8__["PoRowComponent"],
+        _po_list_view_fake_po_list_view_fake_component__WEBPACK_IMPORTED_MODULE_10__["PoListViewFakeComponent"]], imports: [_angular_platform_browser__WEBPACK_IMPORTED_MODULE_0__["BrowserModule"],
         _angular_platform_browser_animations__WEBPACK_IMPORTED_MODULE_2__["BrowserAnimationsModule"],
         _app_routing_module__WEBPACK_IMPORTED_MODULE_3__["AppRoutingModule"],
         _angular_forms__WEBPACK_IMPORTED_MODULE_7__["FormsModule"],
@@ -721,7 +724,8 @@ AppModule.ɵinj = _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵdefineInjector
                 declarations: [
                     _app_component__WEBPACK_IMPORTED_MODULE_4__["AppComponent"],
                     _component_layout_component_layout_component__WEBPACK_IMPORTED_MODULE_6__["ComponentLayoutComponent"],
-                    _porow_porow_component__WEBPACK_IMPORTED_MODULE_8__["PoRowComponent"]
+                    _porow_porow_component__WEBPACK_IMPORTED_MODULE_8__["PoRowComponent"],
+                    _po_list_view_fake_po_list_view_fake_component__WEBPACK_IMPORTED_MODULE_10__["PoListViewFakeComponent"]
                 ],
                 imports: [
                     _angular_platform_browser__WEBPACK_IMPORTED_MODULE_0__["BrowserModule"],
@@ -845,6 +849,64 @@ ComponentLayoutComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵ�
         }], tempViewContainerRef: [{
             type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["ViewChild"],
             args: ["tempViewContainer", { read: _angular_core__WEBPACK_IMPORTED_MODULE_0__["ViewContainerRef"] }]
+        }] }); })();
+
+
+/***/ }),
+
+/***/ "./src/app/po-list-view-fake/po-list-view-fake.component.ts":
+/*!******************************************************************!*\
+  !*** ./src/app/po-list-view-fake/po-list-view-fake.component.ts ***!
+  \******************************************************************/
+/*! exports provided: PoListViewFakeComponent */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "PoListViewFakeComponent", function() { return PoListViewFakeComponent; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/__ivy_ngcc__/fesm2015/core.js");
+/* harmony import */ var _po_ui_ng_components__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @po-ui/ng-components */ "./node_modules/@po-ui/ng-components/__ivy_ngcc__/fesm2015/po-ui-ng-components.js");
+
+
+
+function PoListViewFakeComponent_ng_template_1_Template(rf, ctx) { if (rf & 1) {
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵprojection"](0);
+} }
+const _c0 = ["*"];
+class PoListViewFakeComponent {
+    constructor() {
+        this.items = [];
+        this.propertyTitle = "email";
+        this.height = 500;
+    }
+    ngOnInit() {
+    }
+}
+PoListViewFakeComponent.ɵfac = function PoListViewFakeComponent_Factory(t) { return new (t || PoListViewFakeComponent)(); };
+PoListViewFakeComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineComponent"]({ type: PoListViewFakeComponent, selectors: [["app-po-list-view-fake"]], inputs: { items: ["p-items", "items"], propertyTitle: ["p-property-title", "propertyTitle"], height: ["p-height", "height"] }, ngContentSelectors: _c0, decls: 2, vars: 3, consts: [[3, "p-property-title", "p-items", "p-height"], ["p-list-view-content-template", ""]], template: function PoListViewFakeComponent_Template(rf, ctx) { if (rf & 1) {
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵprojectionDef"]();
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](0, "po-list-view", 0);
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtemplate"](1, PoListViewFakeComponent_ng_template_1_Template, 1, 0, "ng-template", 1);
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
+    } if (rf & 2) {
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("p-property-title", ctx.propertyTitle)("p-items", ctx.items)("p-height", ctx.height);
+    } }, directives: [_po_ui_ng_components__WEBPACK_IMPORTED_MODULE_1__["PoListViewComponent"], _po_ui_ng_components__WEBPACK_IMPORTED_MODULE_1__["PoListViewContentTemplateDirective"]], styles: ["\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IiIsImZpbGUiOiJzcmMvYXBwL3BvLWxpc3Qtdmlldy1mYWtlL3BvLWxpc3Qtdmlldy1mYWtlLmNvbXBvbmVudC5jc3MifQ== */"] });
+/*@__PURE__*/ (function () { _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵsetClassMetadata"](PoListViewFakeComponent, [{
+        type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"],
+        args: [{
+                selector: 'app-po-list-view-fake',
+                templateUrl: './po-list-view-fake.component.html',
+                styleUrls: ['./po-list-view-fake.component.css']
+            }]
+    }], function () { return []; }, { items: [{
+            type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"],
+            args: ['p-items']
+        }], propertyTitle: [{
+            type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"],
+            args: ['p-property-title']
+        }], height: [{
+            type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"],
+            args: ['p-height']
         }] }); })();
 
 
