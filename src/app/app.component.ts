@@ -88,9 +88,6 @@ export class AppComponent implements AfterViewInit {
   ]
 
   exportarJson() {
-
-
-
     const mapper = (component: ComponentLayoutModel) => {
 
       const _temp = {
@@ -174,8 +171,6 @@ export class AppComponent implements AfterViewInit {
   }
 
   //Edição
-
-
   private componentesEdicao: ComponentLayoutModel[] = [];
 
   treeViewData: PoTreeViewItem[] = [];
@@ -207,6 +202,10 @@ export class AppComponent implements AfterViewInit {
   }
 
   private gerarArquivoComponente(componente: ComponentLayoutModel) {
+
+
+
+
     let str = '';
     let strInputs = '';
     const selector = componente.componentRef.componentType['decorators'][0].args[0].selector;
@@ -235,6 +234,10 @@ export class AppComponent implements AfterViewInit {
       }
     }
 
+    if (componente.data.class) {
+      strInputs = strInputs + ' class="' + componente.data.class + '" ';
+    }
+
     let strSubComponentes = '';
 
     for (let i = 0; i < componente.subComponent.length; i++) {
@@ -242,7 +245,11 @@ export class AppComponent implements AfterViewInit {
       strSubComponentes = strSubComponentes + this.gerarArquivoComponente(element);
     }
 
-    str = '<' + selector + strInputs + '> ' + strSubComponentes + ' </' + selector + '>';
+    if (componente.component == PoRowComponent) {
+      str = '<div class="po-row">' + strSubComponentes + ' </div>';
+    } else {
+      str = '<' + selector + strInputs + '> ' + strSubComponentes + ' </' + selector + '>';
+    }
 
     return str;
   }
