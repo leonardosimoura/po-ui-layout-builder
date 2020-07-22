@@ -743,6 +743,10 @@
               }
             }
 
+            if (componente.data["class"]) {
+              strInputs = strInputs + ' class="' + componente.data["class"] + '" ';
+            }
+
             var strSubComponentes = '';
 
             for (var i = 0; i < componente.subComponent.length; i++) {
@@ -750,7 +754,12 @@
               strSubComponentes = strSubComponentes + this.gerarArquivoComponente(_element);
             }
 
-            str = '<' + selector + strInputs + '> ' + strSubComponentes + ' </' + selector + '>';
+            if (componente.component == _porow_porow_component__WEBPACK_IMPORTED_MODULE_3__["PoRowComponent"]) {
+              str = '<div class="po-row">' + strSubComponentes + ' </div>';
+            } else {
+              str = '<' + selector + strInputs + '> ' + strSubComponentes + ' </' + selector + '>';
+            }
+
             return str;
           }
         }, {
