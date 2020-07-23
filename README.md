@@ -9,3 +9,4 @@ Por se tratar de uma versão alpha existem alguns pontos a serem vistos como:
 
 - PoAccordion Item: Não encontra a dependência PoAccordionService (não é exportada no módulo).
 - Não é possivel por hora a utilização de componentes que precisam de um template como o ListView.
+- Exportação para HTML: melhorar como são exportados as configurações dos componentes.
