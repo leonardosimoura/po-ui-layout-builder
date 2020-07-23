@@ -41,8 +41,8 @@
           <po-list-view class="po-md-12" p-property-title="name" [p-items]="componentProperties">
             <ng-template p-list-view-content-template let-item>
               <div class="po-row">
-                <po-switch [(ngModel)]="item.showEditor" p-label="Exibir editor avançado?" p-label-off=" "
-                  p-label-on=" ">
+                <po-switch [(ngModel)]="item.showEditor" class="po-md-6" p-label="Exibir editor avançado?"
+                  p-label-off=" " p-label-on=" ">
                 </po-switch>
               </div>
               <div class="po-row" *ngIf="item.showEditor == undefined || item.showEditor == false">
