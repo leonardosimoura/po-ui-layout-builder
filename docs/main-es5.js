@@ -389,7 +389,7 @@
         if (rf & 2) {
           var ctx_r4 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵnextContext"](2);
 
-          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("p-height", ctx_r4.windowSize - 190)("p-title", "Edi\xE7\xE3o Componente" + ((ctx_r4.componentEdicao == null ? null : ctx_r4.componentEdicao.component == null ? null : ctx_r4.componentEdicao.component.name) ? ctx_r4.componentEdicao == null ? null : ctx_r4.componentEdicao.component == null ? null : ctx_r4.componentEdicao.component.name : ""));
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("p-height", ctx_r4.windowSize - 190)("p-title", "Edi\xE7\xE3o Componente " + ((ctx_r4.componentEdicao == null ? null : ctx_r4.componentEdicao.component == null ? null : ctx_r4.componentEdicao.component.name) ? ctx_r4.componentEdicao == null ? null : ctx_r4.componentEdicao.component == null ? null : ctx_r4.componentEdicao.component.name : ""));
 
           _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](2);
 

@@ -28,7 +28,7 @@
       </po-widget>
 
       <po-widget class="po-lg-6 po-mb-1" [p-height]="windowSize - 190" *ngIf="componentEdicao != null"
-        [p-title]="'Edição Componente' + ( (componentEdicao?.component?.name)?componentEdicao?.component?.name :'')"
+        [p-title]="'Edição Componente ' + ( (componentEdicao?.component?.name)?componentEdicao?.component?.name :'')"
         (p-primary-action)="adicionarSubComponentes()" p-primary-label="Adicionar Subcomponente">
 
         <div class="po-row">

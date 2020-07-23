@@ -159,7 +159,7 @@ function AppComponent_po_widget_5_po_widget_7_Template(rf, ctx) { if (rf & 1) {
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
 } if (rf & 2) {
     const ctx_r4 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵnextContext"](2);
-    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("p-height", ctx_r4.windowSize - 190)("p-title", "Edi\u00E7\u00E3o Componente" + ((ctx_r4.componentEdicao == null ? null : ctx_r4.componentEdicao.component == null ? null : ctx_r4.componentEdicao.component.name) ? ctx_r4.componentEdicao == null ? null : ctx_r4.componentEdicao.component == null ? null : ctx_r4.componentEdicao.component.name : ""));
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("p-height", ctx_r4.windowSize - 190)("p-title", "Edi\u00E7\u00E3o Componente " + ((ctx_r4.componentEdicao == null ? null : ctx_r4.componentEdicao.component == null ? null : ctx_r4.componentEdicao.component.name) ? ctx_r4.componentEdicao == null ? null : ctx_r4.componentEdicao.component == null ? null : ctx_r4.componentEdicao.component.name : ""));
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](2);
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("ngModel", ctx_r4.componentEdicao.component)("p-options", ctx_r4.componentsOptions)("p-filter-mode", "contains");
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](1);
