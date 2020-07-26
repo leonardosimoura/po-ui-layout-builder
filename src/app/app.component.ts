@@ -43,7 +43,6 @@ export class AppComponent implements AfterViewInit {
     if (fileList.length == 1) {
       this.readJsonFile(fileList[0]);
     }
-
   }
 
   @ViewChild("jsonFile") jsonFile: ElementRef;
@@ -118,8 +117,6 @@ export class AppComponent implements AfterViewInit {
     } catch (error) {
       this.poNotification.error('Ocorreu um erro ao exportar o Json');
     }
-
-
   }
 
   readJsonFile(file) {
@@ -203,9 +200,6 @@ export class AppComponent implements AfterViewInit {
 
   private gerarArquivoComponente(componente: ComponentLayoutModel) {
 
-
-
-
     let str = '';
     let strInputs = '';
     const selector = componente.componentRef.componentType['decorators'][0].args[0].selector;
@@ -215,11 +209,13 @@ export class AppComponent implements AfterViewInit {
       let tempValue = '';
       if (componente.data[key.substr(2)]) {
 
-
         try {
           if (componente.data[key.substr(2)]) {
             if (componente.data[key.substr(2)] instanceof Object) {
               tempValue = "'" + JSON.stringify(componente.data[key.substr(2)]) + "'";
+            }
+            else if (!isNaN(componente.data[key.substr(2)])) {
+              tempValue = '"' + ((componente.data[key.substr(2)]) ? componente.data[key.substr(2)] : '').toString() + '"';
             }
             else {
               tempValue = '"' + "'" + ((componente.data[key.substr(2)]) ? componente.data[key.substr(2)] : '').toString() + "'" + '"';

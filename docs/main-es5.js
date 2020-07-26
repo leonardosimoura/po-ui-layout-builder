@@ -731,6 +731,8 @@
                   if (componente.data[key.substr(2)]) {
                     if (componente.data[key.substr(2)] instanceof Object) {
                       tempValue = "'" + JSON.stringify(componente.data[key.substr(2)]) + "'";
+                    } else if (!isNaN(componente.data[key.substr(2)])) {
+                      tempValue = '"' + (componente.data[key.substr(2)] ? componente.data[key.substr(2)] : '').toString() + '"';
                     } else {
                       tempValue = '"' + "'" + (componente.data[key.substr(2)] ? componente.data[key.substr(2)] : '').toString() + "'" + '"';
                     }
